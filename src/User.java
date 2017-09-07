@@ -1,10 +1,10 @@
-public class user {
+public class User {
 
     String name;
     String pass;
     String occupation;
 
-    public  user(String name, String pass, String occupation){
+    public User(String name, String pass, String occupation) {
         this.name = name;
         this.pass = pass;
         this.occupation = occupation;
@@ -32,7 +32,7 @@ public class user {
 
     @Override
     public String toString() {
-        return "user{" +
+        return "User{" +
                 "name='" + name + '\'' +
                 ", pass='" + pass + '\'' +
                 ", occupation='" + occupation + '\'' +
