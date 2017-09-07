@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tenant page</title>
+</head>
+<body>
+    <h1>Room Rental Web Application</h1>
+    <form action="/ShowRoomsServlet" method="get">
+        <input type="submit" value="User overview">
+    </form>
+    <form action="./" method="get">
+        <input type="submit" value="Log out">
+    </form>
+    <br>
+    <form action="./SearchRoomServlet" method="get">
+        Min. square meters:
+        <input type="number" name="squareMeters" min="1" max="9999999" value="1">
+        Max. rental fee in Euro's/month:
+        <input type="number" name="rentalPrice" min="1.00" max="9999999.99" value="999999.99" step=".01">
+        Location city:
+        <input type="text" name="city" placeholder="Optional...">
+        <input type="submit" value="Search">
+    </form>
+</body>
+</html>

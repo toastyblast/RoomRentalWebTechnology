@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Account registration</title>
+</head>
+<body>
+    <h1>Room Rental Web Application</h1>
+    <h2>User registration</h2>
+
+    <form action="/ShowPersonsServlet" method="post">
+        Username: <br>
+        <input type="text" name="chosenUsername" placeholder="Enter desired username..." required>
+        <br><br>
+        Password: <br>
+        <input type="password" name="chosenPassword" placeholder="Enter desired password..." required>
+        <br><br>
+        Select user type: <br>
+        <input type="radio" name="userType" value="tenant" checked> Tenant <br>
+        <input type="radio" name="userType" value="landlord"> Landlord
+        <br><br>
+        <input type="submit" value="Register">
+
+    </form>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Landlord Add Room</title>
+</head>
+<body>
+    <h1>Room Rental Web Application</h1>
+    <form action="/ShowPersonsServlet" method="get">
+        <input type="submit" value="User overview">
+    </form>
+    <form action="./" method="get">
+        <input type="submit" value="Log out">
+    </form>
+    <br>
+    <form action="./" method="get">
+        Room surface in square meters:
+        <input type="number" name="squareMeters" min="1" max="9999999" value="1" required>
+        <br>
+        Rental fee in Euro's/month:
+        <input type="number" name="rentalPrice" min="1.00" max="9999999.99" value="1.00" step=".01" required>
+        <br>
+        City where the room is located:
+        <input type="text" name="city" placeholder="I.E. Enschede" required>
+        <br><br>
+        <input type="submit" value="Add room">
+    </form>
+</body>
+</html>
