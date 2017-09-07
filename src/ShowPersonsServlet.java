@@ -19,6 +19,7 @@ public class ShowPersonsServlet extends HttpServlet {
     public void service(ServletRequest req, ServletResponse res) throws ServletException, IOException {
         super.service(req, res);
         //Anything else than the super...
+        //Test...
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
