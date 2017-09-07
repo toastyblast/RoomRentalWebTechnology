@@ -23,7 +23,8 @@ public class ShowPersonsServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        Object myContextParam = request.getSession().getServletContext().getAttribute("userList");
+        response.getWriter().println(myContextParam);
     }
 
     @Override

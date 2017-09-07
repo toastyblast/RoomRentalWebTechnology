@@ -1,10 +1,12 @@
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 @WebServlet("/LogInServlet")
@@ -37,17 +39,21 @@ public class LogInServlet extends HttpServlet {
             if (!correctInfo) {
                 response.sendRedirect("invalidcredentials.html");
             } else if (correctInfo) {
+
                 request.getSession().getServletContext().setAttribute("currentUser", user);
 
                 if (user.getOccupation().equals("tenant")) {
                     RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/tenant.html");
                     dispatcher.forward(request, response);
                 } else if (user.getOccupation().equals("landlord")) {
-                    RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/addroom.html");
-                    dispatcher.forward(request, response);
+                    ServletContext context= getServletContext();
+                    RequestDispatcher rd= context.getRequestDispatcher("/ShowRoomsServlet");
+                    rd.forward(request, response);
                 }
 
-                response.getWriter().println("ok");
+
+
+//                response.getWriter().println("ok");
             }
         }
     }
