@@ -12,7 +12,7 @@ public class ShowPersonsServlet extends HttpServlet {
     public void init() throws ServletException {
         super.init();
 
-        //Anything else than the super.
+        //Anything else than the super...
     }
 
     @Override

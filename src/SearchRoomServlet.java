@@ -26,8 +26,21 @@ public class SearchRoomServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession userSession = request.getSession();
+        int minSquareMeters = 1;
+        double maxRentalFee = 9999999.99;
+        String location = "";
 
-        //...
+        if (request.getParameter("squareMeters") != null) {
+            minSquareMeters = Integer.parseInt(request.getParameter("squareMeters"));
+        }
+        if (request.getParameter("rentalPrice") != null) {
+            maxRentalFee = Integer.parseInt(request.getParameter("rentalPrice"));
+        }
+        if (request.getParameter("city") != null && !request.getParameter("city").equals("")) {
+            location = request.getParameter("city");
+        }
+
+        //TODO: Matching searching queries here and then display the list of rooms.
     }
 
     @Override
