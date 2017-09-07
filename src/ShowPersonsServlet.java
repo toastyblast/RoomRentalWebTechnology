@@ -23,73 +23,11 @@ public class ShowPersonsServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        User user = new User(request.getParameter("username"), request.getParameter("password"), request.getParameter("userType"));
-        boolean correctInfo = false;
 
-        if (request.getSession().getServletContext().getAttribute("userList") == null) {
-            response.sendRedirect("invalidcredentials.html");
-        } else {
-            Object myContextParam = request.getSession().getServletContext().getAttribute("userList");
-            ArrayList<User> users = (ArrayList<User>) myContextParam;
-
-            for (int i = 0; users.size() > i; i++) {
-                User user1 = users.get(i);
-
-                if (user.getName().equals(user1.getName()) && user.getPass().equals(user1.getPass())) {
-                    correctInfo = true;
-                    user = user1;
-                }
-            }
-
-            if (!correctInfo) {
-                response.sendRedirect("invalidcredentials.html");
-            } else if (correctInfo) {
-                request.getSession().getServletContext().setAttribute("currentUser", user);
-
-                if (user.getOccupation().equals("tenant")) {
-                    RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/tenant.html");
-                    dispatcher.forward(request, response);
-                } else if (user.getOccupation().equals("landlord")) {
-                    RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/addroom.html");
-                    dispatcher.forward(request, response);
-                }
-
-                response.getWriter().println("ok");
-            }
-        }
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        boolean unique = true;
-
-        if (req.getSession().getServletContext().getAttribute("userList") == null) {
-            ArrayList<User> arrayList = new ArrayList();
-            req.getSession().getServletContext().setAttribute("userList", arrayList);
-        }
-
-        if (req.getSession().getServletContext().getAttribute("userList") != null) {
-            Object myContextParam = req.getSession().getServletContext().getAttribute("userList");
-            ArrayList<User> arrayList = (ArrayList<User>) myContextParam;
-            User user = new User(req.getParameter("chosenUsername"), req.getParameter("chosenPassword"), req.getParameter("userType"));
-
-            for (int i = 0; arrayList.size() > i; i++) {
-                User user1 = arrayList.get(i);
-
-                if (user.getName().equals(user1.getName()) && user.getPass().equals(user1.getPass())) {
-                    unique = false;
-                }
-            }
-
-            if (unique) {
-                arrayList.add(user);
-                req.getSession().getServletContext().setAttribute("userList", arrayList);
-                resp.getWriter().println(myContextParam);
-            } else {
-                resp.getWriter().println("User already exists!");
-            }
-        }
-
 
     }
 
