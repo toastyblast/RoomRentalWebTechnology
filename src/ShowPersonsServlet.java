@@ -12,7 +12,7 @@ public class ShowPersonsServlet extends HttpServlet {
     public void init() throws ServletException {
         super.init();
 
-        //Anything else than the super...
+        //Anything else than the super.
     }
 
     @Override
@@ -75,7 +75,7 @@ public class ShowPersonsServlet extends HttpServlet {
 
             for (int i = 0; arrayList.size() > i; i++) {
                 User user1 = arrayList.get(i);
-                
+
                 if (user.getName().equals(user1.getName()) && user.getPass().equals(user1.getPass())) {
                     unique = false;
                 }
