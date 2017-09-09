@@ -18,12 +18,24 @@ public class LogInServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        //Get the information of the user from the log in form.
         User user = new User(request.getParameter("username"), request.getParameter("password"), request.getParameter("userType"));
         boolean correctInfo = false;
+
+        //Check if there are any registered users.
+        //1.If there are none redirect them to the invalidcredentials.html.
+        //2.If there are registered users check if the user name password combination from the form match any of the
+        //registered users.
+        //2.1 If the information is correct redirect the user to either the tenant or landlord page, depending on the
+        //user type.
+        //2.2 If the user information is wrong redirect to invalidcredentials.html.
 
         if (request.getSession().getServletContext().getAttribute("userList") == null) {
             response.sendRedirect("invalidcredentials.html");
         } else {
+
+            //Get the userList from the ServletContext.
             Object myContextParam = request.getSession().getServletContext().getAttribute("userList");
             ArrayList<User> users = (ArrayList<User>) myContextParam;
 
@@ -40,6 +52,7 @@ public class LogInServlet extends HttpServlet {
                 response.sendRedirect("invalidcredentials.html");
             } else if (correctInfo) {
 
+                //Set the information for the "currently logged" user.
                 request.getSession().getServletContext().setAttribute("currentUser", user);
 
                 if (user.getOccupation().equals("tenant")) {

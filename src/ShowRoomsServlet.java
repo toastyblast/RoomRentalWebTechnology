@@ -27,12 +27,22 @@ public class ShowRoomsServlet extends HttpServlet {
         //Anything else than the super...
     }
 
+    /**
+     * Method for displaying the add room form and also any rooms that belong to this landlord.
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //...
-        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/addroom.html");
+//        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/addroom.html");
 //                    dispatcher.forward(request, response);
+
+        //Get the current user's info(landlord).
         Object userCurrent = request.getSession().getServletContext().getAttribute("currentUser");
         User currentUser = (User) userCurrent;
+
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         out.println("<html>");
@@ -60,6 +70,8 @@ public class ShowRoomsServlet extends HttpServlet {
         out.println("<br><br>");
         out.println("<input type=\"submit\" value=\"Add room\">");
         out.println("</form>");
+
+        //Retrieve the array list which contains the rooms that the landlord owns and display them, if there are any.
         Object roomList = request.getSession().getServletContext().getAttribute(currentUser.getName());
         if (roomList == null){
             out.println("<h14> no rooms added yet </h14>");
@@ -70,17 +82,29 @@ public class ShowRoomsServlet extends HttpServlet {
         out.println("</html>");
     }
 
+    /**
+     * Method for adding rooms.
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //...
 
+        //Get the information of the currently logged user.
         Object myContextParam = req.getSession().getServletContext().getAttribute("currentUser");
         User currentUser = (User) myContextParam;
+
+        //If there is no array list with rooms from this user, create one.
         if (req.getSession().getServletContext().getAttribute(currentUser.getName() ) == null){
             ArrayList<Room> rooms = new ArrayList<>();
             req.getSession().getServletContext().setAttribute(currentUser.getName(), rooms);
         }
 
+        //If there is an array list "connected" to the user, retrieve it from the ServletContext add to it the new room
+        //and then update the list in the ServletContext.
         if (req.getSession().getServletContext().getAttribute(currentUser.getName()) != null){
             String location = req.getParameter("city");
             int squareMeters = Integer.parseInt(req.getParameter("squareMeters"));
