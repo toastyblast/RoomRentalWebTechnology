@@ -5,6 +5,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -53,15 +54,18 @@ public class LogInServlet extends HttpServlet {
             } else if (correctInfo) {
 
                 //Set the information for the "currently logged" user.
-                request.getSession().getServletContext().setAttribute("currentUser", user);
+
+                HttpSession session = request.getSession();
+                session.setAttribute("userName", user.getName());
+                session.setAttribute("userPassword", user.getPass());
+                session.setAttribute("userType", user.getOccupation());
 
                 if (user.getOccupation().equals("tenant")) {
                     RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/tenant.html");
                     dispatcher.forward(request, response);
                 } else if (user.getOccupation().equals("landlord")) {
                     ServletContext context= getServletContext();
-                    RequestDispatcher rd= context.getRequestDispatcher("/ShowRoomsServlet");
-                    rd.forward(request, response);
+                    response.sendRedirect("/ShowRoomsServlet");
                 }
 
 

@@ -45,8 +45,12 @@ public class RegisterServlet extends HttpServlet {
                 arrayList.add(user);
                 req.getSession().getServletContext().setAttribute("userList", arrayList);
                 resp.getWriter().println(myContextParam);
+                resp.setContentType("text/html");
+                resp.getWriter().println("  <a href=\"/login.html\">Go to login page.</a>");
             } else {
                 resp.getWriter().println("User already exists!");
+                resp.setContentType("text/html");
+                resp.getWriter().println(" Go back to registration. <a href=\"/register.html\">Go back to registration.</a>");
             }
         }
     }

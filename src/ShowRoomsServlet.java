@@ -6,6 +6,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -36,12 +37,14 @@ public class ShowRoomsServlet extends HttpServlet {
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //...
-//        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/addroom.html");
-//                    dispatcher.forward(request, response);
 
         //Get the current user's info(landlord).
-        Object userCurrent = request.getSession().getServletContext().getAttribute("currentUser");
-        User currentUser = (User) userCurrent;
+
+        HttpSession session = request.getSession();
+        String userName = (String) session.getAttribute("userName");
+        String userPassword = (String) session.getAttribute("userPassword");
+        String userType = (String) session.getAttribute("userType");
+        User currentUser = new User(userName, userPassword, userType);
 
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
@@ -94,8 +97,12 @@ public class ShowRoomsServlet extends HttpServlet {
         //...
 
         //Get the information of the currently logged user.
-        Object myContextParam = req.getSession().getServletContext().getAttribute("currentUser");
-        User currentUser = (User) myContextParam;
+
+        HttpSession session = req.getSession();
+        String userName = (String) session.getAttribute("userName");
+        String userPassword = (String) session.getAttribute("userPassword");
+        String userType = (String) session.getAttribute("userType");
+        User currentUser = new User(userName, userPassword, userType);
 
         //If there is no array list with rooms from this user, create one.
         if (req.getSession().getServletContext().getAttribute(currentUser.getName() ) == null){
