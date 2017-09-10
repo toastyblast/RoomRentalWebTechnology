@@ -24,8 +24,8 @@ public class Room {
     @Override
     public String toString() {
         return "User{" +
-                "location='" + location + '\'' +
-                ", squareMeters='" + squareMeters + '\'' +
+                "location='" + location + "\n" +
+                ", squareMeters='" + squareMeters + "\n" +
                 ", rentalFee='" + rentalFee + '\'' +
                 '}';
     }
