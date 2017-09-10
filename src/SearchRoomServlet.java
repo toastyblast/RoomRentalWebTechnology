@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.ArrayList;
 
 @WebServlet("/SearchRoomServlet")
 public class SearchRoomServlet extends HttpServlet {
@@ -39,6 +40,24 @@ public class SearchRoomServlet extends HttpServlet {
         if (request.getParameter("city") != null && !request.getParameter("city").equals("")) {
             location = request.getParameter("city");
         }
+
+        ArrayList<Room> allRooms = (ArrayList<Room>) request.getSession().getServletContext().getAttribute("allRooms");
+        for (int i = 0 ; i < allRooms.size() ; i++){
+            Room currentRoom = allRooms.get(i);
+            if (minSquareMeters <= currentRoom.getSquareMeters() && maxRentalFee >= currentRoom.getRentalFee()){
+                if (location.isEmpty()){
+                    response.setContentType("text/html");
+                    response.getWriter().println("<p>" + currentRoom + "</p>");
+                }else if (!location.isEmpty()){
+                    if (currentRoom.getLocation().equals(location)){
+                        response.setContentType("text/html");
+                        response.getWriter().println("<p>" + currentRoom + "</p>");
+                    }
+                }
+
+            }
+        }
+//        response.getWriter().println(allRooms);
 
         //TODO: Matching searching queries here and then display the list of rooms.
     }

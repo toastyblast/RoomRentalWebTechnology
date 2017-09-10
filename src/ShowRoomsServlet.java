@@ -110,6 +110,11 @@ public class ShowRoomsServlet extends HttpServlet {
             req.getSession().getServletContext().setAttribute(currentUser.getName(), rooms);
         }
 
+        if (req.getSession().getServletContext().getAttribute("allRooms") == null){
+            ArrayList<Room> allRooms = new ArrayList<>();
+            req.getSession().getServletContext().setAttribute("allRooms", allRooms);
+        }
+
         //If there is an array list "connected" to the user, retrieve it from the ServletContext add to it the new room
         //and then update the list in the ServletContext.
         if (req.getSession().getServletContext().getAttribute(currentUser.getName()) != null){
@@ -122,7 +127,14 @@ public class ShowRoomsServlet extends HttpServlet {
             ArrayList<Room> newList = (ArrayList<Room>) roomList;
             newList.add(room);
             req.getSession().getServletContext().setAttribute(currentUser.getName(), newList);
+
+
+            ArrayList<Room> allRooms = (ArrayList<Room>) req.getSession().getServletContext().getAttribute("allRooms");
+            allRooms.add(room);
+            req.getSession().getServletContext().setAttribute("allRooms", allRooms);
+
             resp.getWriter().println(newList);
+            resp.getWriter().println(allRooms.size());
         }
 
     }
