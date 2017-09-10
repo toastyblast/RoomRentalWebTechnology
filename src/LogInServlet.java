@@ -7,19 +7,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 
 @WebServlet("/LogInServlet")
 public class LogInServlet extends HttpServlet {
-
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-
-    }
-
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
         //Get the information of the user from the log in form.
         User user = new User(request.getParameter("username"), request.getParameter("password"), request.getParameter("userType"));
         boolean correctInfo = false;
@@ -31,11 +23,9 @@ public class LogInServlet extends HttpServlet {
         //2.1 If the information is correct redirect the user to either the tenant or landlord page, depending on the
         //user type.
         //2.2 If the user information is wrong redirect to invalidcredentials.html.
-
         if (request.getSession().getServletContext().getAttribute("userList") == null) {
             response.sendRedirect("invalidcredentials.html");
         } else {
-
             //Get the userList from the ServletContext.
             Object myContextParam = request.getSession().getServletContext().getAttribute("userList");
             ArrayList<User> users = (ArrayList<User>) myContextParam;
@@ -52,9 +42,7 @@ public class LogInServlet extends HttpServlet {
             if (!correctInfo) {
                 response.sendRedirect("invalidcredentials.html");
             } else if (correctInfo) {
-
                 //Set the information for the "currently logged" user.
-
                 HttpSession session = request.getSession();
                 session.setAttribute("userName", user.getName());
                 session.setAttribute("userPassword", user.getPass());
@@ -64,11 +52,9 @@ public class LogInServlet extends HttpServlet {
                     RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/tenant.html");
                     dispatcher.forward(request, response);
                 } else if (user.getOccupation().equals("landlord")) {
-                    ServletContext context= getServletContext();
+                    ServletContext context = getServletContext();
                     response.sendRedirect("/ShowRoomsServlet");
                 }
-
-
 
 //                response.getWriter().println("ok");
             }
