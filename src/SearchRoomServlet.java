@@ -7,8 +7,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
+/**
+ * This is a Java Servlet that is used to take the client's searching queries and compare them to the list of rooms, displaying the result.
+ */
 @WebServlet("/SearchRoomServlet")
 public class SearchRoomServlet extends HttpServlet {
     @Override
@@ -25,8 +29,19 @@ public class SearchRoomServlet extends HttpServlet {
         //Anything else than the super...
     }
 
+
+    /**
+     * This is the piece of the servlet that goes through the given queries and returns a page with a list of results.
+     *
+     * @param request is the request from the user's client.
+     * @param response is what the server will respond with to the request.
+     * @throws ServletException is an exception thrown when the server encounters any kind of difficulty.
+     * @throws IOException happens when any form of an I/O operation has been interrupted or caused to fail.
+     */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession userSession = request.getSession();
+        //TODO: Check if the access to this page has been done by a landlord logging in, and not someone who just typed in the URL into their browser's bar.
+
+//        HttpSession userSession = request.getSession();
         int minSquareMeters = 1;
         double maxRentalFee = 9999999.99;
         String location = "";
@@ -35,31 +50,40 @@ public class SearchRoomServlet extends HttpServlet {
             minSquareMeters = Integer.parseInt(request.getParameter("squareMeters"));
         }
         if (request.getParameter("rentalPrice") != null) {
-            maxRentalFee = Integer.parseInt(request.getParameter("rentalPrice"));
+            maxRentalFee = Double.parseDouble(request.getParameter("rentalPrice"));
         }
         if (request.getParameter("city") != null && !request.getParameter("city").equals("")) {
             location = request.getParameter("city");
         }
 
         ArrayList<Room> allRooms = (ArrayList<Room>) request.getSession().getServletContext().getAttribute("allRooms");
-        for (int i = 0 ; i < allRooms.size() ; i++){
-            Room currentRoom = allRooms.get(i);
-            if (minSquareMeters <= currentRoom.getSquareMeters() && maxRentalFee >= currentRoom.getRentalFee()){
-                if (location.isEmpty()){
-                    response.setContentType("text/html");
-                    response.getWriter().println("<p>" + currentRoom + "</p>");
-                }else if (!location.isEmpty()){
-                    if (currentRoom.getLocation().equals(location)){
-                        response.setContentType("text/html");
-                        response.getWriter().println("<p>" + currentRoom + "</p>");
+        PrintWriter out = response.getWriter();
+        int roomsFound = 0;
+        response.setContentType("text/html");
+
+        for (Room currentRoom : allRooms) {
+            //Take all the rooms and compare them one by one to the search queries.
+            if (minSquareMeters <= currentRoom.getSquareMeters() && maxRentalFee >= currentRoom.getRentalFee()) {
+                //First check if the room is as big or bigger than the given space, and if the fee is equal or less than the given fee.
+                if (location.isEmpty()) {
+                    out.println("<p>" + currentRoom + "</p>");
+                    roomsFound++;
+                } else {
+                    //This means the user did fill in an location, so check if this room applies to that to.
+                    if (currentRoom.getLocation().equals(location)) {
+                        out.println("<p>" + currentRoom + "</p>");
+                        roomsFound++;
                     }
                 }
-
             }
         }
-//        response.getWriter().println(allRooms);
-
-        //TODO: Matching searching queries here and then display the list of rooms.
+        if (roomsFound == 0) {
+            //If no rooms have been found, let the user know!
+            out.println("<p>No rooms matching your search queries could be found!</p>");
+            out.println("<p>To try again, go back one page using the browser's back arrow!</p>");
+        } else {
+            out.println("<p>To return to the search menu, go back one page using the browser's back arrow!</p>");
+        }
     }
 
     @Override

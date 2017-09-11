@@ -11,9 +11,11 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
+/**
+ * This Servlet is used to display a list of the currently logged in landlord's rooms and allow him to add a room as well.
+ */
 @WebServlet("/ShowRoomsServlet")
 public class ShowRoomsServlet extends HttpServlet {
-
     @Override
     public void init() throws ServletException {
         super.init();
@@ -30,30 +32,32 @@ public class ShowRoomsServlet extends HttpServlet {
 
     /**
      * Method for displaying the add room form and also any rooms that belong to this landlord.
-     * @param request
-     * @param response
-     * @throws ServletException
-     * @throws IOException
+     *
+     * @param request is the request from the user's client.
+     * @param response is what the server will respond with to the request.
+     * @throws ServletException is an exception thrown when the server encounters any kind of difficulty.
+     * @throws IOException happens when any form of an I/O operation has been interrupted or caused to fail.
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //...
-
         //Get the current user's info(landlord).
-
         HttpSession session = request.getSession();
         String userName = (String) session.getAttribute("userName");
         String userPassword = (String) session.getAttribute("userPassword");
         String userType = (String) session.getAttribute("userType");
         User currentUser = new User(userName, userPassword, userType);
 
+        //TODO: Check if the access to this page has been done by a landlord logging in, and not someone who just typed in the URL into their browser's bar.
+
+        //Since we do not know how to only reload a certain part of the page, we instead reload the whole page here.
+        // Sorry for this, but as mentioned, we have no idea how to only reload certain parts of HTML.
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         out.println("<html>");
         out.println("<head>");
-        out.println("<title>Holao</title>");
+        out.println("<title>Room registration</title>");
         out.println("</head>");
         out.println("<body bgcolor=\"white\">");
-        out.println(" <h1>Room Rental Web Application</h1>");
+        out.println("<h1>Room Rental Web Application</h1>");
         out.println("<form action=\"/ShowPersonsServlet\" method=\"get\">");
         out.println("<input type=\"submit\" value=\"User overview\">");
         out.println("</form>");
@@ -73,10 +77,9 @@ public class ShowRoomsServlet extends HttpServlet {
         out.println("<br><br>");
         out.println("<input type=\"submit\" value=\"Add room\">");
         out.println("</form>");
-
         //Retrieve the array list which contains the rooms that the landlord owns and display them, if there are any.
         Object roomList = request.getSession().getServletContext().getAttribute(currentUser.getName());
-        if (roomList == null){
+        if (roomList == null) {
             out.println("<h14> no rooms added yet </h14>");
         } else {
             out.println("<h14> " + roomList + "  </h14>");
@@ -86,38 +89,38 @@ public class ShowRoomsServlet extends HttpServlet {
     }
 
     /**
-     * Method for adding rooms.
-     * @param req
-     * @param resp
-     * @throws ServletException
-     * @throws IOException
+     * Method for when a landlord has provided information for a room and clicked the "Add room" button.
+     *
+     * @param req is the request from the user's client.
+     * @param resp is what the server will respond with to the request.
+     * @throws ServletException is an exception thrown when the server encounters any kind of difficulty.
+     * @throws IOException happens when any form of an I/O operation has been interrupted or caused to fail.
      */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //...
-
         //Get the information of the currently logged user.
-
         HttpSession session = req.getSession();
         String userName = (String) session.getAttribute("userName");
         String userPassword = (String) session.getAttribute("userPassword");
         String userType = (String) session.getAttribute("userType");
         User currentUser = new User(userName, userPassword, userType);
 
+        //TODO: Check if the access to this page has been done by a landlord logging in, and not someone who just typed in the URL into their browser's bar.
+
         //If there is no array list with rooms from this user, create one.
-        if (req.getSession().getServletContext().getAttribute(currentUser.getName() ) == null){
+        if (req.getSession().getServletContext().getAttribute(currentUser.getName()) == null) {
             ArrayList<Room> rooms = new ArrayList<>();
             req.getSession().getServletContext().setAttribute(currentUser.getName(), rooms);
         }
 
-        if (req.getSession().getServletContext().getAttribute("allRooms") == null){
+        if (req.getSession().getServletContext().getAttribute("allRooms") == null) {
             ArrayList<Room> allRooms = new ArrayList<>();
             req.getSession().getServletContext().setAttribute("allRooms", allRooms);
         }
 
         //If there is an array list "connected" to the user, retrieve it from the ServletContext add to it the new room
         //and then update the list in the ServletContext.
-        if (req.getSession().getServletContext().getAttribute(currentUser.getName()) != null){
+        if (req.getSession().getServletContext().getAttribute(currentUser.getName()) != null) {
             String location = req.getParameter("city");
             int squareMeters = Integer.parseInt(req.getParameter("squareMeters"));
             double rentalPrice = Double.parseDouble(req.getParameter("rentalPrice"));
@@ -128,7 +131,6 @@ public class ShowRoomsServlet extends HttpServlet {
             newList.add(room);
             req.getSession().getServletContext().setAttribute(currentUser.getName(), newList);
 
-
             ArrayList<Room> allRooms = (ArrayList<Room>) req.getSession().getServletContext().getAttribute("allRooms");
             allRooms.add(room);
             req.getSession().getServletContext().setAttribute("allRooms", allRooms);
@@ -136,7 +138,6 @@ public class ShowRoomsServlet extends HttpServlet {
             resp.getWriter().println(newList);
             resp.getWriter().println(allRooms.size());
         }
-
     }
 
     @Override
