@@ -10,6 +10,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
+/**
+ * This is a Java Servlet that is used to take the client's searching queries and compare them to the list of rooms, displaying the result.
+ */
 @WebServlet("/SearchRoomServlet")
 public class SearchRoomServlet extends HttpServlet {
     @Override
@@ -26,6 +29,15 @@ public class SearchRoomServlet extends HttpServlet {
         //Anything else than the super...
     }
 
+
+    /**
+     * This is the piece of the servlet that goes through the given queries and returns a page with a list of results.
+     *
+     * @param request is the request from the user's client.
+     * @param response is what the server will respond with to the request.
+     * @throws ServletException is an exception thrown when the server encounters any kind of difficulty.
+     * @throws IOException happens when any form of an I/O operation has been interrupted or caused to fail.
+     */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //TODO: Check if the access to this page has been done by a landlord logging in, and not someone who just typed in the URL into their browser's bar.
 

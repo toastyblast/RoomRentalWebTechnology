@@ -9,6 +9,9 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * A Java Servlet that checks a client's given credentials and makes sure to forward them to the right pages.
+ */
 @WebServlet("/LogInServlet")
 public class LogInServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -44,7 +47,7 @@ public class LogInServlet extends HttpServlet {
 
             if (!correctInfo) {
                 response.sendRedirect("invalidcredentials.html");
-            } else if (correctInfo) {
+            } else {
                 //Set the information for the "currently logged" user.
                 HttpSession session = request.getSession();
                 session.setAttribute("userName", user.getName());
@@ -58,8 +61,6 @@ public class LogInServlet extends HttpServlet {
                     ServletContext context = getServletContext();
                     response.sendRedirect("/ShowRoomsServlet");
                 }
-
-//                response.getWriter().println("ok");
             }
         }
     }

@@ -11,6 +11,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
+/**
+ * This Servlet is used to display a list of the currently logged in landlord's rooms and allow him to add a room as well.
+ */
 @WebServlet("/ShowRoomsServlet")
 public class ShowRoomsServlet extends HttpServlet {
     @Override
@@ -30,10 +33,10 @@ public class ShowRoomsServlet extends HttpServlet {
     /**
      * Method for displaying the add room form and also any rooms that belong to this landlord.
      *
-     * @param request
-     * @param response
-     * @throws ServletException
-     * @throws IOException
+     * @param request is the request from the user's client.
+     * @param response is what the server will respond with to the request.
+     * @throws ServletException is an exception thrown when the server encounters any kind of difficulty.
+     * @throws IOException happens when any form of an I/O operation has been interrupted or caused to fail.
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //Get the current user's info(landlord).
@@ -88,10 +91,10 @@ public class ShowRoomsServlet extends HttpServlet {
     /**
      * Method for when a landlord has provided information for a room and clicked the "Add room" button.
      *
-     * @param req
-     * @param resp
-     * @throws ServletException
-     * @throws IOException
+     * @param req is the request from the user's client.
+     * @param resp is what the server will respond with to the request.
+     * @throws ServletException is an exception thrown when the server encounters any kind of difficulty.
+     * @throws IOException happens when any form of an I/O operation has been interrupted or caused to fail.
      */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

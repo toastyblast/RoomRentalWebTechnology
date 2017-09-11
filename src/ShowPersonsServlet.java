@@ -7,6 +7,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+/**
+ * Java Servlet that is used to show a page of all users in the system and a hit counter for the person page.
+ */
 @WebServlet("/ShowPersonsServlet")
 public class ShowPersonsServlet extends HttpServlet {
     private int counter;
@@ -25,6 +28,16 @@ public class ShowPersonsServlet extends HttpServlet {
         //Anything else than the super...
     }
 
+
+    /**
+     * The piece of code that shows the lsit of all users on the website and the amount of times it has been visited by
+     * the client's browser in a set amount of time.
+     *
+     * @param request is the request from the user's client.
+     * @param response is what the server will respond with to the request.
+     * @throws ServletException is an exception thrown when the server encounters any kind of difficulty.
+     * @throws IOException happens when any form of an I/O operation has been interrupted or caused to fail.
+     */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //TODO: Check if the access to this page has been done by a landlord logging in, and not someone who just typed in the URL into their browser's bar.
 
