@@ -14,11 +14,11 @@
     </form>
     <br>
     <form action="./SearchRoomServlet" method="get">
-        Min. square meters:
+        <label about="squareMeters">Min. square meters:</label>
         <input type="number" name="squareMeters" min="1" max="9999999" value="1">
-        Max. rental fee in Euro's/month:
+        <label about="rentalPrice">Max. rental fee in Euro's/month:</label>
         <input type="number" name="rentalPrice" min="1.00" max="9999999.99" value="999999.99" step=".01">
-        Location city:
+        <label about="city">Location city:</label>
         <input type="text" name="city" placeholder="Optional...">
         <input type="submit" value="Search">
     </form>
