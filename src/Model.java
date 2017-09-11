@@ -32,4 +32,15 @@ public class Model {
         return false;
     }
 
+    public ArrayList getRooms(User user){
+        ArrayList<Room> userRooms = new ArrayList<>();
+        if (user.getOccupation().equals("landlord")){
+            for (int i = 0 ; i < addedRooms.size() ; i++){
+                if (user.getName().equals(addedRooms.get(i).getLandlord())){
+                    userRooms.add(addedRooms.get(i));
+                }
+            }
+        }
+        return userRooms;
+    }
 }

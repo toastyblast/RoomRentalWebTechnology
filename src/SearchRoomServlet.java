@@ -15,11 +15,13 @@ import java.util.ArrayList;
  */
 @WebServlet("/SearchRoomServlet")
 public class SearchRoomServlet extends HttpServlet {
+    private Model model;
+
     @Override
     public void init() throws ServletException {
         super.init();
+        model = (Model) getServletContext().getAttribute("model");
 
-        //Anything else than the super...
     }
 
     @Override
@@ -56,7 +58,7 @@ public class SearchRoomServlet extends HttpServlet {
             location = request.getParameter("city");
         }
 
-        ArrayList<Room> allRooms = (ArrayList<Room>) request.getSession().getServletContext().getAttribute("allRooms");
+        ArrayList<Room> allRooms = model.getAddedRooms();
         PrintWriter out = response.getWriter();
         int roomsFound = 0;
         response.setContentType("text/html");
