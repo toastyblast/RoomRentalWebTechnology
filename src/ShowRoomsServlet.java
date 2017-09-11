@@ -21,8 +21,8 @@ public class ShowRoomsServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         super.init();
-        model = (Model) getServletContext().getAttribute("model");
 
+        model = (Model) getServletContext().getAttribute("model");
     }
 
     @Override

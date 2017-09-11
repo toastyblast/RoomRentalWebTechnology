@@ -48,7 +48,7 @@ public class LogInServlet extends HttpServlet {
             session.setAttribute("userType", user.getOccupation());
 
             if (user.getOccupation().equals("tenant")) {
-                RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/tenant.html");
+                RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("./WEB-INF/tenant.html");
                 dispatcher.forward(request, response);
             } else if (user.getOccupation().equals("landlord")) {
                 response.sendRedirect("./ShowRoomsServlet");
