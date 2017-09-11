@@ -6,15 +6,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 
 @WebServlet("/ShowPersonsServlet")
 public class ShowPersonsServlet extends HttpServlet {
+    private int counter;
+
     @Override
     public void init() throws ServletException {
         super.init();
 
-        //Anything else than the super...
+        counter = 0;
     }
 
     @Override
@@ -29,7 +30,6 @@ public class ShowPersonsServlet extends HttpServlet {
 
         PrintWriter out = response.getWriter();
         Cookie[] cookies = request.getCookies();
-        int counter = 0;
 
         response.setContentType("text/html");
         //Display a list of all the users in the system.
@@ -37,26 +37,28 @@ public class ShowPersonsServlet extends HttpServlet {
         //TODO: Don't make the list display the passwords of the users.
         response.getWriter().println(myContextParam);
 
-        for (Cookie currentCookie : cookies) {
-            //Check if the user has a counter cookie already, meaning they've been to this page before in the last 24 hours.
-            if (currentCookie.getName().equals("hit_count")) {
-                //If they do have a counter cookie, increase its count by 1
-                counter = Integer.parseInt(currentCookie.getValue());
-                counter++;
-                currentCookie.setValue(counter + "");
-                break;
+        if (cookies != null) {
+            //Check if the array of cookies isn't empty.
+            for (Cookie currentCookie : cookies) {
+                //Check if the user's web client has a counter cookie already, meaning they've been to this page before in the last 24 hours.
+                if (currentCookie.getName().equals("hit_count")) {
+                    //If they do have a counter cookie, increase its count by 1
+                    //TODO - YORAN: Ask in class about how to fix the issue where the cookie's counter stays as 1 regardless.
+                    counter = Integer.parseInt(currentCookie.getValue());
+                    counter++;
+                    currentCookie.setValue(counter + "");
+                }
             }
         }
-
         if (counter == 0) {
-            //This means that the user hasn't been on this page before, so we need to make a new cookie for them.
+            //This means that the user's web client hasn't been on this page before, so we need to make a new cookie for them.
             Cookie cookie = new Cookie("hit_count", "1");
-            cookie.setMaxAge((60 * 60) * 24); //Set the cookie's max age to 24 hours.
+            cookie.setMaxAge(60 * 5); //Set the cookie's max age to 5 minutes.
             response.addCookie(cookie);
             counter++;
         }
 
-        out.println("<p>This web client has visited this page  " + counter + " time(s) during the last 24 hours!</p>");
+        out.println("<p>Your current web client has visited this page " + counter + " time(s) during the last 5 minutes</p>");
     }
 
     @Override
