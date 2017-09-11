@@ -56,22 +56,25 @@ public class ShowPersonsServlet extends HttpServlet {
                 //Check if the user's web client has a counter cookie already, meaning they've been to this page before in the last 24 hours.
                 if (currentCookie.getName().equals("hit_count")) {
                     //If they do have a counter cookie, increase its count by 1
-                    //TODO - YORAN: Ask in class about how to fix the issue where the cookie's counter stays as 1 regardless.
                     counter = Integer.parseInt(currentCookie.getValue());
                     counter++;
                     currentCookie.setValue(counter + "");
+                    currentCookie.setMaxAge((60 * 60) * 24); //Set the cookie's max age to 24 hours, as you'll redeploy it.
+                    response.addCookie(currentCookie);
                 }
             }
         }
         if (counter == 0) {
             //This means that the user's web client hasn't been on this page before, so we need to make a new cookie for them.
             Cookie cookie = new Cookie("hit_count", "1");
-            cookie.setMaxAge(60 * 5); //Set the cookie's max age to 5 minutes.
+            cookie.setMaxAge((60 * 60) * 24); //Set the cookie's max age to 24 hours.
             response.addCookie(cookie);
             counter++;
         }
 
-        out.println("<p>Your current web client has visited this page " + counter + " time(s) during the last 5 minutes</p>");
+        out.println("<p>Your current web client has visited this page " + counter + " time(s) during the last 24 hours</p>");
+        counter = 0; //Reset the counter again so that whenever the max age has been passed, since then the production
+        // of a new counter cookie for the next 24 hours.
     }
 
     @Override
