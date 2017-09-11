@@ -20,6 +20,8 @@ public class RegisterServlet extends HttpServlet {
      * @throws IOException happens when any form of an I/O operation has been interrupted or caused to fail.
      */
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        //TODO: Check if the access to this page has been done by a landlord logging in, and not someone who just typed in the URL into their browser's bar.
+
         boolean unique = true;
 
         //Check if there is a user list, if not create one.
@@ -43,15 +45,15 @@ public class RegisterServlet extends HttpServlet {
                 }
             }
 
+            resp.setContentType("text/html");
+
             if (unique) {
                 //If the new credentials are unique, then add the user to the list of users and notify the user of the success.
                 arrayList.add(user);
-                resp.setContentType("text/html");
                 resp.getWriter().println("Account has succesfully been registered. Go to the <a href=\"/login.html\">login page</a> to try your new account.");
             } else {
                 //The user credentials are not unique, so let them know and give them an option to try again.
                 resp.getWriter().println("User with that name already exists!");
-                resp.setContentType("text/html");
                 resp.getWriter().println(" To try again, <a href=\"/register.html\">go back to registration.</a>");
             }
         }

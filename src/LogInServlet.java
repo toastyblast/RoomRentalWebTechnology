@@ -12,6 +12,8 @@ import java.util.ArrayList;
 @WebServlet("/LogInServlet")
 public class LogInServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        //TODO: Check if the access to this page has been done by a landlord logging in, and not someone who just typed in the URL into their browser's bar.
+
         //Get the information of the user from the log in form.
         User user = new User(request.getParameter("username"), request.getParameter("password"), request.getParameter("userType"));
         boolean correctInfo = false;
@@ -36,6 +38,7 @@ public class LogInServlet extends HttpServlet {
                 if (user.getName().equals(user1.getName()) && user.getPass().equals(user1.getPass())) {
                     correctInfo = true;
                     user = user1;
+                    break;
                 }
             }
 
