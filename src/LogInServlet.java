@@ -64,4 +64,11 @@ public class LogInServlet extends HttpServlet {
             }
         }
     }
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        //TODO: Check if the access to this page has been done by a landlord logging in, and not someone who just typed in the URL into their browser's bar.
+
+        //TODO: If the user is logged in, redirect them either through the doPost here. If not, redirect them to the login page or a special warning html page.
+    }
 }
