@@ -122,7 +122,7 @@ public class ShowRoomsServlet extends HttpServlet {
             int squareMeters = Integer.parseInt(req.getParameter("squareMeters"));
             double rentalPrice = Double.parseDouble(req.getParameter("rentalPrice"));
 
-            Room room = new Room(location, squareMeters, rentalPrice);
+            Room room = new Room(location, squareMeters, rentalPrice, "someone");
             Object roomList = req.getSession().getServletContext().getAttribute(currentUser.getName());
             ArrayList<Room> newList = (ArrayList<Room>) roomList;
             newList.add(room);

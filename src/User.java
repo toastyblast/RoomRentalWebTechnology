@@ -21,6 +21,10 @@ public class User {
         return pass;
     }
 
+    public void setOccupation(String occupation) {
+        this.occupation = occupation;
+    }
+
     @Override
     public String toString() {
         return "User{" +

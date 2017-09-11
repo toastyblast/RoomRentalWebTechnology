@@ -1,12 +1,15 @@
 public class Room {
+
     private String location;
     private int squareMeters;
     private double rentalFee;
+    private String landlord;
 
-    public Room(String location, int squareMeters, double rentalFee) {
+    public Room(String location, int squareMeters, double rentalFee, String landlord) {
         this.location = location;
         this.squareMeters = squareMeters;
         this.rentalFee = rentalFee;
+        this.landlord = landlord;
     }
 
     public String getLocation() {
@@ -28,5 +31,9 @@ public class Room {
                 ", squareMeters='" + squareMeters + "\n" +
                 ", rentalFee='" + rentalFee + '\'' +
                 '}';
+    }
+
+    public String getLandlord() {
+        return landlord;
     }
 }
