@@ -13,7 +13,7 @@ import java.util.ArrayList;
 /**
  * This is a Java Servlet that is used to take the client's searching queries and compare them to the list of rooms, displaying the result.
  */
-@WebServlet("/SearchRoomServlet")
+@WebServlet("./SearchRoomServlet")
 public class SearchRoomServlet extends HttpServlet {
     private Model model;
 
@@ -30,7 +30,6 @@ public class SearchRoomServlet extends HttpServlet {
 
         //Anything else than the super...
     }
-
 
     /**
      * This is the piece of the servlet that goes through the given queries and returns a page with a list of results.

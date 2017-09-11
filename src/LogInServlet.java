@@ -17,8 +17,8 @@ public class LogInServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         super.init();
-        model = (Model) getServletContext().getAttribute("model");
 
+        model = (Model) getServletContext().getAttribute("model");
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -39,7 +39,7 @@ public class LogInServlet extends HttpServlet {
         correctInfo = model.checkUser(user);
 
         if (!correctInfo) {
-            response.sendRedirect("invalidcredentials.html");
+            response.sendRedirect("./invalidcredentials.html");
         } else if (correctInfo) {
             //Set the information for the "currently logged" user.
             HttpSession session = request.getSession();
@@ -51,10 +51,13 @@ public class LogInServlet extends HttpServlet {
                 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/tenant.html");
                 dispatcher.forward(request, response);
             } else if (user.getOccupation().equals("landlord")) {
-                response.sendRedirect("/ShowRoomsServlet");
+                response.sendRedirect("./ShowRoomsServlet");
             }
-
         }
+    }
 
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        //TODO: Log the user out using this and redirect them back to the login page.
     }
 }

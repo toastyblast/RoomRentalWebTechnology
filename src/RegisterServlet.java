@@ -17,8 +17,8 @@ public class RegisterServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         super.init();
-        model = (Model) getServletContext().getAttribute("model");
 
+        model = (Model) getServletContext().getAttribute("model");
     }
 
     /**
@@ -48,11 +48,11 @@ public class RegisterServlet extends HttpServlet {
         if (!notUnique) {
             //If the new credentials are unique, then add the user to the list of users and notify the user of the success.
             model.getRegisteredUsers().add(user);
-            resp.getWriter().println("Account has succesfully been registered. Go to the <a href=\"/login.html\">login page</a> to try your new account.");
+            resp.getWriter().println("Account has succesfully been registered. Go to the <a href=\"./login.html\">login page</a> to try your new account.");
         } else {
             //The user credentials are not unique, so let them know and give them an option to try again.
             resp.getWriter().println("User with that name already exists!");
-            resp.getWriter().println(" To try again, <a href=\"/register.html\">go back to registration.</a>");
+            resp.getWriter().println(" To try again, <a href=\"./register.html\">go back to registration.</a>");
         }
 
     }

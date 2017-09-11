@@ -97,7 +97,7 @@ public class ShowRoomsServlet extends HttpServlet {
         out.println("<head>");
         out.println("</head>");
         out.println("<body>");
-        out.println(" To add room, <a href=\"/.html\">click here.</a>");
+        out.println(" To add room, <a href=\"./???.html\">click here.</a>");
         out.println("<ul>");
         for (Object anArrayList : arrayList) {
             out.println("<li>" + anArrayList + "</li>");

@@ -8,14 +8,14 @@
     <h1>Room Rental Web Application</h1>
     <h2>User registration</h2>
 
-    <form action="/RegisterServlet" method="post">
-        Username: <br>
+    <form action="./RegisterServlet" method="post">
+        <label about="chosenUsername">Username:</label><br>
         <input type="text" name="chosenUsername" placeholder="Enter desired username..." required>
         <br><br>
-        Password: <br>
+        <label about="password">Password:</label><br>
         <input type="password" name="chosenPassword" placeholder="Enter desired password..." required>
         <br><br>
-        Select User type: <br>
+        <label about="userType">Select User type:</label><br>
         <input type="radio" name="userType" value="tenant" checked> Tenant <br>
         <input type="radio" name="userType" value="landlord"> Landlord
         <br><br>
