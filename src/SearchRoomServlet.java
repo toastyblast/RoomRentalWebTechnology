@@ -62,6 +62,7 @@ public class SearchRoomServlet extends HttpServlet {
         double maxRentalFee = 9999999.99;
         String location = "";
 
+        //TODO: Add these parses into try loops first. There's still a chance someone filled in something that's not a number through the F12 menu, and we should catch that here and anywhere else we parse something.
         if (request.getParameter("squareMeters") != null) {
             minSquareMeters = Integer.parseInt(request.getParameter("squareMeters"));
         }
