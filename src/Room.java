@@ -4,12 +4,42 @@ public class Room {
     private int squareMeters;
     private double rentalFee;
     private String landlord;
+    private String renter;
+    private boolean available;
+    private int id;
 
-    public Room(String location, int squareMeters, double rentalFee, String landlord) {
+    @Override
+    public String toString() {
+        return "Room{" +
+                "location='" + location + '\'' +
+                ", squareMeters=" + squareMeters +
+                ", rentalFee=" + rentalFee +
+                ", landlord='" + landlord + '\'' +
+                ", renter='" + renter + '\'' +
+                ", available=" + available +
+                ", id=" + id +
+                '}';
+    }
+
+    public Room(String location, int squareMeters, double rentalFee, String landlord, int id) {
         this.location = location;
         this.squareMeters = squareMeters;
         this.rentalFee = rentalFee;
         this.landlord = landlord;
+        this.available = true;
+        this.id = id;
+    }
+
+    public boolean isAvailable() {
+        return available;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setAvailable(boolean available) {
+        this.available = available;
     }
 
     public String getLocation() {
@@ -24,17 +54,11 @@ public class Room {
         return rentalFee;
     }
 
-    @Override
-    public String toString() {
-        return "Room{" +
-                "location='" + location + '\'' +
-                ", squareMeters=" + squareMeters +
-                ", rentalFee=" + rentalFee +
-                ", landlord='" + landlord + '\'' +
-                '}';
-    }
-
     public String getLandlord() {
         return landlord;
+    }
+
+    public void setRenter(String renter) {
+        this.renter = renter;
     }
 }

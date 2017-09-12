@@ -15,7 +15,6 @@ public class LogInServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         super.init();
-
         model = (Model) getServletContext().getAttribute("model");
     }
 
@@ -41,7 +40,13 @@ public class LogInServlet extends HttpServlet {
 
         if (!correctInfo) {
             response.sendRedirect("./invalidcredentials.html");
-        } else if (correctInfo) {
+        }
+        else if (request.getSession(false) != null){
+//            response.sendRedirect("./NO.html");
+//            response.getWriter().println("It seems you are still logged in.");
+            response.getWriter().println("<a href=\" ./LogOutServlet\"> click here</a>, to log out of your current account.");
+        }
+        else if (correctInfo) {
             //Set the information for the "currently logged" user.
             HttpSession session = request.getSession();
             session.setAttribute("user", user);

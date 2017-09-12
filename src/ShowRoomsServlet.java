@@ -61,7 +61,7 @@ public class ShowRoomsServlet extends HttpServlet {
                 out.println("<h1>Room Rental Web Application</h1>");
                 out.println("<form action=\"./ShowPersonsServlet\" method=\"get\">");
                 out.println("<input type=\"submit\" value=\"User overview\"></form>");
-                out.println("<form action=\"./LogInServlet\" method=\"get\">");
+                out.println("<form action=\"./LogOutServlet\" method=\"get\">");
                 out.println("<input type=\"submit\" value=\"Log out\"></form>");
                 out.println("<br>");
                 out.println("<form action=\"./OverviewServlet\" method=\"get\">");
@@ -112,14 +112,15 @@ public class ShowRoomsServlet extends HttpServlet {
                 int squareMeters = Integer.parseInt(req.getParameter("squareMeters"));
                 double rentalPrice = Double.parseDouble(req.getParameter("rentalPrice"));
                 //TODO: Add these parses into try loops first. There's still a chance someone filled in something that's not a number through the F12 menu, and we should catch that here and anywhere else we parse something.
-                Room room = new Room(location, squareMeters, rentalPrice, currentUser.getName());
+//                Room room = new Room(location, squareMeters, rentalPrice, currentUser.getName());
 
                 int before = model.getAddedRooms().size();
-                model.getAddedRooms().add(room);
+//                model.getAddedRooms().add(room);
+                model.addRoom(location, squareMeters, rentalPrice, currentUser.getName());
                 int after = model.getAddedRooms().size();
 
                 if (before < after){
-                    resp.getWriter().println("Room successfully added: " + room);
+                    resp.getWriter().println("Room successfully added: " + model.getAddedRooms().get(model.getAddedRooms().size()-1));
                 }
 
                 resp.getWriter().println("<a href=\"./ShowRoomsServlet\">Click here</a> to return to the overview of your rooms.");
