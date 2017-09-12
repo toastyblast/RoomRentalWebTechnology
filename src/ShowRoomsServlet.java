@@ -1,4 +1,3 @@
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -41,70 +40,52 @@ public class ShowRoomsServlet extends HttpServlet {
      * @throws IOException happens when any form of an I/O operation has been interrupted or caused to fail.
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //Get the current user's info(landlord).
-        HttpSession session = request.getSession();
-        String userName = (String) session.getAttribute("userName");
-        String userPassword = (String) session.getAttribute("userPassword");
-        String userType = (String) session.getAttribute("userType");
-        User currentUser = new User(userName, userPassword, userType);
+        //Get the user's session, if they have one.
+        HttpSession session = request.getSession(false);
+        //Check if this user has a session in the first place, because they aren't allowed to come here unless logged in.
+        if (session != null){
+            //Get the user object that should be bound to this session.
+            User currentUser = (User) session.getAttribute("user");
 
-        //TODO: Check if the access to this page has been done by a landlord logging in, and not someone who just typed in the URL into their browser's bar.
-
-        //Since we do not know how to only reload a certain part of the page, we instead reload the whole page here.
-        // Sorry for this, but as mentioned, we have no idea how to only reload certain parts of HTML.
-//        response.setContentType("text/html");
-//        PrintWriter out = response.getWriter();
-//        out.println("<html>");
-//        out.println("<head>");
-//        out.println("<title>Room registration</title>");
-//        out.println("</head>");
-//        out.println("<body bgcolor=\"white\">");
-//        out.println("<h1>Room Rental Web Application</h1>");
-//        out.println("<form action=\"/ShowPersonsServlet\" method=\"get\">");
-//        out.println("<input type=\"submit\" value=\"User overview\">");
-//        out.println("</form>");
-//        out.println("<form action=\"./\" method=\"get\">");
-//        out.println("<input type=\"submit\" value=\"Log out\">");
-//        out.println("</form>");
-//        out.println("<br>");
-//        out.println("<form action=\"/ShowRoomsServlet\" method=\"post\">");
-//        out.println("Room surface in square meters:");
-//        out.println("<input type=\"number\" name=\"squareMeters\" min=\"1\" max=\"9999999\" value=\"1\" required>");
-//        out.println("<br>");
-//        out.println("Rental fee in Euro's/month:");
-//        out.println("<input type=\"number\" name=\"rentalPrice\" min=\"1.00\" max=\"9999999.99\" value=\"1.00\" step=\".01\" required>");
-//        out.println("<br>");
-//        out.println("City where the room is located:");
-//        out.println("<input type=\"text\" name=\"city\" placeholder=\"I.E. Enschede\" required>");
-//        out.println("<br><br>");
-//        out.println("<input type=\"submit\" value=\"Add room\">");
-//        out.println("</form>");
-//        //Retrieve the array list which contains the rooms that the landlord owns and display them, if there are any.
-//        Object roomList = request.getSession().getServletContext().getAttribute(currentUser.getName());
-//        if (roomList == null) {
-//            out.println("<h14> no rooms added yet </h14>");
-//        } else {
-//            out.println("<h14> " + roomList + "  </h14>");
-//        }
-//        out.println("</body>");
-//        out.println("</html>");
-
-
-        ArrayList arrayList = model.getRooms(currentUser);
-
-        PrintWriter out = response.getWriter();
-        out.println("<html>");
-        out.println("<head>");
-        out.println("</head>");
-        out.println("<body>");
-        out.println(" To add room, <a href=\"./Overview\">click here.</a>");
-        out.println("<ul>");
-        for (Object anArrayList : arrayList) {
-            out.println("<li>" + anArrayList + "</li>");
+            if (currentUser.getOccupation().equals("landlord")) {
+                //Since we now know it's an actual landlord logged in, we can show whatever the landlord should see on this page.
+                //Get his list of rooms!
+                ArrayList arrayList = model.getRooms(currentUser);
+                //Since the contents of this page is dynamic and not static, the HTML has to be made here in println()'s.
+                PrintWriter out = response.getWriter();
+                out.println("<html>");
+                out.println("<head>");
+                out.println("<title>Room overview</title>");
+                out.println("</head>");
+                out.println("<body>");
+                out.println("<h1>Room Rental Web Application</h1>");
+                out.println("<form action=\"./ShowPersonsServlet\" method=\"get\">");
+                out.println("<input type=\"submit\" value=\"User overview\"></form>");
+                out.println("<form action=\"./LoginServlet\" method=\"get\">");
+                out.println("<input type=\"submit\" value=\"Log out\"></form>");
+                out.println("<br>");
+                out.println("<form action=\"./OverviewServlet\" method=\"get\">");
+                out.println("<input type=\"submit\" value=\"Add a room\"></form>");
+                if (arrayList == null) {
+                    //If the landlord has no rooms yet, tell them!
+                    out.println("You currently have no rooms added yet!");
+                } else {
+                    out.println("<ul>");
+                    for (Object anArrayListItem : arrayList) {
+                        out.println("<li>" + anArrayListItem + "</li>");
+                    }
+                    out.println("</ul>");
+                }
+                out.println("<body>");
+                out.println("</html>");
+            } else {
+                //They're a landlord and they should not be able to view this page.
+                response.sendRedirect("./NO.html");
+            }
+        } else {
+            //If they are not logged in at all, let them know they shouldn't be here.
+            response.sendRedirect("./NO.html");
         }
-        out.println("</ul>");
-        out.println("<body>");
-        out.println("</html>");
     }
 
     /**
@@ -117,35 +98,38 @@ public class ShowRoomsServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //Get the information of the currently logged user.
-        HttpSession session = req.getSession();
-        String userName = (String) session.getAttribute("userName");
-        String userPassword = (String) session.getAttribute("userPassword");
-        String userType = (String) session.getAttribute("userType");
-        User currentUser = new User(userName, userPassword, userType);
+        //Get the user's session, if they have one.
+        HttpSession session = req.getSession(false);
+        //Check if this user has a session in the first place, because they aren't allowed to come here unless logged in.
+        if (session != null){
+            //Get the user object that should be bound to this session.
+            User currentUser = (User) session.getAttribute("user");
 
-        //TODO: Check if the access to this page has been done by a landlord logging in, and not someone who just typed in the URL into their browser's bar.
+            if (currentUser.getOccupation().equals("landlord")) {
+                //If there is an array list "connected" to the user, retrieve it from the ServletContext add to it the new room
+                //and then update the list in the ServletContext.
+                String location = req.getParameter("city");
+                int squareMeters = Integer.parseInt(req.getParameter("squareMeters"));
+                double rentalPrice = Double.parseDouble(req.getParameter("rentalPrice"));
+                Room room = new Room(location, squareMeters, rentalPrice, currentUser.getName());
 
+                int before = model.getAddedRooms().size();
+                model.getAddedRooms().add(room);
+                int after = model.getAddedRooms().size();
 
-        //If there is an array list "connected" to the user, retrieve it from the ServletContext add to it the new room
-        //and then update the list in the ServletContext.
+                if (before < after){
+                    resp.getWriter().println("Room successfully added: " + room);
+                }
 
-        String location = req.getParameter("city");
-        int squareMeters = Integer.parseInt(req.getParameter("squareMeters"));
-        double rentalPrice = Double.parseDouble(req.getParameter("rentalPrice"));
-        Room room = new Room(location, squareMeters, rentalPrice, currentUser.getName());
-
-        int before = model.getAddedRooms().size();
-
-        model.getAddedRooms().add(room);
-
-        int after = model.getAddedRooms().size();
-
-        if (before < after){
-            resp.getWriter().println("Room successfully added. " + room);
+                resp.getWriter().println("<a href=\"./ShowRoomsServlet\">Click here</a> to return to the overview of your rooms.");
+            } else {
+                //They're a landlord and they should not be able to view this page.
+                resp.sendRedirect("./NO.html");
+            }
+        } else {
+            //If they are not logged in at all, let them know they shouldn't be here.
+            resp.sendRedirect("./NO.html");
         }
-        resp.getWriter().println(" Go back, <a href=\"./ShowRoomsServlet\">click here.</a>");
-
     }
 
     @Override

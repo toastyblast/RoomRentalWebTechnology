@@ -40,9 +40,24 @@ public class SearchRoomServlet extends HttpServlet {
      * @throws IOException happens when any form of an I/O operation has been interrupted or caused to fail.
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //TODO: Check if the access to this page has been done by a landlord logging in, and not someone who just typed in the URL into their browser's bar.
+        //Get the user's session, if they have one.
+        HttpSession session = request.getSession(false);
+        //Check if this user has a session in the first place, because they aren't allowed to come here unless logged in.
+        if (session != null){
+            //Get the user object that should be bound to this session.
+            User user = (User) session.getAttribute("user");
 
-//        HttpSession userSession = request.getSession();
+            if (user.getOccupation().equals("tenant")) {
+                //Just let the user continue, do nothing else that's special.
+            } else {
+                //They're a landlord and they should not be able to view this page.
+                response.sendRedirect("./NO.html");
+            }
+        } else {
+            //If they are not logged in at all, let them know they shouldn't be here.
+            response.sendRedirect("./NO.html");
+        }
+
         int minSquareMeters = 1;
         double maxRentalFee = 9999999.99;
         String location = "";
@@ -60,8 +75,8 @@ public class SearchRoomServlet extends HttpServlet {
         ArrayList<Room> allRooms = model.getAddedRooms();
         PrintWriter out = response.getWriter();
         int roomsFound = 0;
-        response.setContentType("text/html");
 
+        response.setContentType("text/html");
         for (Room currentRoom : allRooms) {
             //Take all the rooms and compare them one by one to the search queries.
             if (minSquareMeters <= currentRoom.getSquareMeters() && maxRentalFee >= currentRoom.getRentalFee()) {
