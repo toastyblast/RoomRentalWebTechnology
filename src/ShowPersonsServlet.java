@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 
 /**
  * Java Servlet that is used to show a page of all users in the system and a hit counter for the person page.
@@ -13,11 +14,12 @@ import java.io.PrintWriter;
 @WebServlet("/ShowPersonsServlet")
 public class ShowPersonsServlet extends HttpServlet {
     private int counter;
+    private Model model;
 
     @Override
     public void init() throws ServletException {
         super.init();
-
+        model = (Model) getServletContext().getAttribute("model");
         counter = 0;
     }
 
@@ -46,10 +48,7 @@ public class ShowPersonsServlet extends HttpServlet {
 
         response.setContentType("text/html");
         //Display a list of all the users in the system.
-        Object myContextParam = request.getSession().getServletContext().getAttribute("userList");
         //TODO: Don't make the list display the passwords of the users.
-        response.getWriter().println(myContextParam);
-
         if (cookies != null) {
             //Check if the array of cookies isn't empty.
             for (Cookie currentCookie : cookies) {
@@ -75,6 +74,13 @@ public class ShowPersonsServlet extends HttpServlet {
         out.println("<p>Your current web client has visited this page " + counter + " time(s) during the last 24 hours</p>");
         counter = 0; //Reset the counter again so that whenever the max age has been passed, since then the production
         // of a new counter cookie for the next 24 hours.
+
+        ArrayList<User> users = model.getRegisteredUsers();
+        out.println("<ul>");
+        for (Object user : users){
+            out.println("<li>" + user + "</li>");
+        }
+        out.println("</ul>");
     }
 
     @Override

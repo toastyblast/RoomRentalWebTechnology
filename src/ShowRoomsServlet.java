@@ -97,7 +97,7 @@ public class ShowRoomsServlet extends HttpServlet {
         out.println("<head>");
         out.println("</head>");
         out.println("<body>");
-        out.println(" To add room, <a href=\"./???.html\">click here.</a>");
+        out.println(" To add room, <a href=\"./Overview\">click here.</a>");
         out.println("<ul>");
         for (Object anArrayList : arrayList) {
             out.println("<li>" + anArrayList + "</li>");
@@ -126,6 +126,7 @@ public class ShowRoomsServlet extends HttpServlet {
 
         //TODO: Check if the access to this page has been done by a landlord logging in, and not someone who just typed in the URL into their browser's bar.
 
+
         //If there is an array list "connected" to the user, retrieve it from the ServletContext add to it the new room
         //and then update the list in the ServletContext.
 
@@ -134,9 +135,17 @@ public class ShowRoomsServlet extends HttpServlet {
         double rentalPrice = Double.parseDouble(req.getParameter("rentalPrice"));
         Room room = new Room(location, squareMeters, rentalPrice, currentUser.getName());
 
+        int before = model.getAddedRooms().size();
+
         model.getAddedRooms().add(room);
 
-        resp.getWriter().println(model.getAddedRooms());
+        int after = model.getAddedRooms().size();
+
+        if (before < after){
+            resp.getWriter().println("Room successfully added. " + room);
+        }
+        resp.getWriter().println(" Go back, <a href=\"./ShowRoomsServlet\">click here.</a>");
+
     }
 
     @Override

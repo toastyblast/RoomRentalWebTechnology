@@ -48,7 +48,7 @@ public class LogInServlet extends HttpServlet {
             session.setAttribute("userType", user.getOccupation());
 
             if (user.getOccupation().equals("tenant")) {
-                RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("./WEB-INF/tenant.html");
+                RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/./WEB-INF/tenant.html");
                 dispatcher.forward(request, response);
             } else if (user.getOccupation().equals("landlord")) {
                 response.sendRedirect("./ShowRoomsServlet");
@@ -59,5 +59,6 @@ public class LogInServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //TODO: Log the user out using this and redirect them back to the login page.
+        resp.getWriter().println("hi");
     }
 }
