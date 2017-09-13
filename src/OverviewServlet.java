@@ -10,7 +10,7 @@ import java.io.IOException;
 @WebServlet("/OverviewServlet")
 public class OverviewServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //...
+        //TODO..? Do something here to check if someone didn't force to do a doPost through a service like POSTMAN.
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

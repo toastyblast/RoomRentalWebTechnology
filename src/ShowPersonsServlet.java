@@ -87,6 +87,11 @@ public class ShowPersonsServlet extends HttpServlet {
     }
 
     @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        //TODO..? Do something here to check if someone didn't force to do a doPost through a service like POSTMAN.
+    }
+
+    @Override
     public void destroy() {
         super.destroy();
 

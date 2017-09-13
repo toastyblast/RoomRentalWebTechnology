@@ -53,7 +53,7 @@ public class ShowRoomsServlet extends HttpServlet {
                 ArrayList arrayList = model.getRooms(currentUser);
                 //Since the contents of this page is dynamic and not static, the HTML has to be made here in println()'s.
                 PrintWriter out = response.getWriter();
-                out.println("<html>");
+                response.setContentType("text/html");
                 out.println("<head>");
                 out.println("<title>Room overview</title>");
                 out.println("</head>");
@@ -61,7 +61,7 @@ public class ShowRoomsServlet extends HttpServlet {
                 out.println("<h1>Room Rental Web Application</h1>");
                 out.println("<form action=\"./ShowPersonsServlet\" method=\"get\">");
                 out.println("<input type=\"submit\" value=\"User overview\"></form>");
-                out.println("<form action=\"./LogOutServlet\" method=\"get\">");
+                out.println("<form action=\"./LogInServlet\" method=\"get\">");
                 out.println("<input type=\"submit\" value=\"Log out\"></form>");
                 out.println("<br>");
                 out.println("<form action=\"./OverviewServlet\" method=\"get\">");
@@ -77,7 +77,6 @@ public class ShowRoomsServlet extends HttpServlet {
                     out.println("</ul>");
                 }
                 out.println("<body>");
-                out.println("</html>");
             } else {
                 //They're a landlord and they should not be able to view this page.
                 response.sendRedirect("./NO.html");
@@ -109,21 +108,22 @@ public class ShowRoomsServlet extends HttpServlet {
                 //If there is an array list "connected" to the user, retrieve it from the ServletContext add to it the new room
                 //and then update the list in the ServletContext.
                 String location = req.getParameter("city");
+                //TODO: Add these parses into try loops first. There's still a chance someone filled in something that's not a number through the F12 menu, and we should catch that here and anywhere else we parse something.
                 int squareMeters = Integer.parseInt(req.getParameter("squareMeters"));
                 double rentalPrice = Double.parseDouble(req.getParameter("rentalPrice"));
-                //TODO: Add these parses into try loops first. There's still a chance someone filled in something that's not a number through the F12 menu, and we should catch that here and anywhere else we parse something.
-//                Room room = new Room(location, squareMeters, rentalPrice, currentUser.getName());
 
                 int before = model.getAddedRooms().size();
-//                model.getAddedRooms().add(room);
                 model.addRoom(location, squareMeters, rentalPrice, currentUser.getName());
                 int after = model.getAddedRooms().size();
 
+                PrintWriter out = resp.getWriter();
+                resp.setContentType("text/html");
                 if (before < after){
-                    resp.getWriter().println("Room successfully added: " + model.getAddedRooms().get(model.getAddedRooms().size()-1));
+                    out.println("Your room has been successfully added:");
+                    out.println("<br>" + model.getAddedRooms().get(model.getAddedRooms().size()-1) + "<br><br>");
                 }
 
-                resp.getWriter().println("<a href=\"./ShowRoomsServlet\">Click here</a> to return to the overview of your rooms.");
+                out.println("<a href=\"./ShowRoomsServlet\">Click here</a> to return to the overview of your rooms.");
             } else {
                 //They're a landlord and they should not be able to view this page.
                 resp.sendRedirect("./NO.html");

@@ -6,15 +6,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 @WebServlet("/LogInServlet")
 public class LogInServlet extends HttpServlet {
-
     private Model model;
 
     @Override
     public void init() throws ServletException {
         super.init();
+
         model = (Model) getServletContext().getAttribute("model");
     }
 
@@ -39,22 +40,27 @@ public class LogInServlet extends HttpServlet {
         correctInfo = model.checkUser(user);
 
         if (!correctInfo) {
+            //The user did not supply correct credentials, let them know!
             response.sendRedirect("./invalidcredentials.html");
-        }
-        else if (request.getSession(false) != null){
-//            response.sendRedirect("./NO.html");
-//            response.getWriter().println("It seems you are still logged in.");
-            response.getWriter().println("<a href=\" ./LogOutServlet\"> click here</a>, to log out of your current account.");
-        }
-        else if (correctInfo) {
+        } else if (request.getSession(false) != null){
+            PrintWriter out = response.getWriter();
+            //There is still an active account on this browser, let the user either log out or return to the login menu
+            out.println("<h1>Oops, login conflict! :(</h1>");
+            out.println("<p>It seems that you're already logged in on another tab in this browser. This means we can't log you in here!</p>");
+            out.println("To go back to the login screen, <a href=\"./login.html\">click here</a><br><br>");
+            out.println("Optionally, you could also force log the other account out by pressing the button and try to login again!");
+            out.println("To force such a logout across all active tabs, <a href=\"./LogInServlet\">click here</a>");
+        } else if (correctInfo) {
             //Set the information for the "currently logged" user.
             HttpSession session = request.getSession();
             session.setAttribute("user", user);
 
             if (user.getOccupation().equals("tenant")) {
+                //If the user is a tenant, send them to the tenant.html page
                 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/tenant.html");
                 dispatcher.forward(request, response);
             } else if (user.getOccupation().equals("landlord")) {
+                //If the user is a landlord, send them to their rooms overview servlet!
                 response.sendRedirect("./ShowRoomsServlet");
             }
         }
@@ -67,7 +73,7 @@ public class LogInServlet extends HttpServlet {
         //Check if this user has a session in the first place.
         if (httpSession != null){
             //If they do, invalidate their session and redirect them back to the login screen.
-            httpSession.removeAttribute("user");
+            httpSession.invalidate();
             resp.sendRedirect("./login.html");
         } else {
             //If they are not logged in at all, let them know they shouldn't be here.

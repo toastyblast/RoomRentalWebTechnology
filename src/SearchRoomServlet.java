@@ -20,8 +20,8 @@ public class SearchRoomServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         super.init();
-        model = (Model) getServletContext().getAttribute("model");
 
+        model = (Model) getServletContext().getAttribute("model");
     }
 
     @Override
@@ -84,13 +84,11 @@ public class SearchRoomServlet extends HttpServlet {
             if (minSquareMeters <= currentRoom.getSquareMeters() && maxRentalFee >= currentRoom.getRentalFee()) {
                 //First check if the room is as big or bigger than the given space, and if the fee is equal or less than the given fee.
                 if (location.isEmpty()) {
-//                    out.println("<p>" + currentRoom + "</p>");
                     out.println("<input type=\"radio\" name=\"roomForRent\" value=\""+ currentRoom.getId() +"\" checked>" + currentRoom + " <br>");
                     roomsFound++;
                 } else {
                     //This means the user did fill in an location, so check if this room applies to that to.
                     if (currentRoom.getLocation().equals(location)) {
-//                        out.println("<p>" + currentRoom + "</p>");
                         out.println("<input type=\"radio\" name=\"roomForRent\" value=\""+ currentRoom.getId() +"\" checked>" + currentRoom + " <br>");
                         roomsFound++;
                     }
@@ -106,6 +104,11 @@ public class SearchRoomServlet extends HttpServlet {
         } else {
             out.println("<p>To return to the search menu, go back one page using the browser's back arrow!</p>");
         }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        //TODO..? Do something here to check if someone didn't force to do a doPost through a service like POSTMAN.
     }
 
     @Override
