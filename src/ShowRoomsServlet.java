@@ -107,10 +107,30 @@ public class ShowRoomsServlet extends HttpServlet {
             if (currentUser.getOccupation().equals("landlord")) {
                 //If there is an array list "connected" to the user, retrieve it from the ServletContext add to it the new room
                 //and then update the list in the ServletContext.
+
+                //Check if the information is OK.
+                if (req.getParameter("city").isEmpty() || req.getParameter("city") != null){
+                    resp.sendRedirect("NO.html");
+                }
                 String location = req.getParameter("city");
+
+
                 //TODO: Add these parses into try loops first. There's still a chance someone filled in something that's not a number through the F12 menu, and we should catch that here and anywhere else we parse something.
-                int squareMeters = Integer.parseInt(req.getParameter("squareMeters"));
-                double rentalPrice = Double.parseDouble(req.getParameter("rentalPrice"));
+                int squareMeters = 0;
+
+                try {
+                    squareMeters = Integer.parseInt(req.getParameter("squareMeters"));
+                } catch (NumberFormatException nfe){
+                    resp.sendRedirect("NO.html");
+                }
+
+                double rentalPrice = 0;
+                try {
+                    rentalPrice = Double.parseDouble(req.getParameter("rentalPrice"));
+                } catch (NumberFormatException nfe){
+                    resp.sendRedirect("NO.html");
+                }
+
 
                 int before = model.getAddedRooms().size();
                 model.addRoom(location, squareMeters, rentalPrice, currentUser.getName());

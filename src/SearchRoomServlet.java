@@ -55,10 +55,18 @@ public class SearchRoomServlet extends HttpServlet {
 
         //TODO: Add these parses into try loops first. There's still a chance someone filled in something that's not a number through the F12 menu, and we should catch that here and anywhere else we parse something.
         if (request.getParameter("squareMeters") != null) {
-            minSquareMeters = Integer.parseInt(request.getParameter("squareMeters"));
+            try {
+                minSquareMeters = Integer.parseInt(request.getParameter("squareMeters"));
+            } catch (NumberFormatException nfe){
+                response.sendRedirect("NO.html");
+            }
         }
         if (request.getParameter("rentalPrice") != null) {
-            maxRentalFee = Double.parseDouble(request.getParameter("rentalPrice"));
+            try {
+                maxRentalFee = Double.parseDouble(request.getParameter("rentalPrice"));
+            } catch (NumberFormatException nfe){
+                response.sendRedirect("NO.html");
+            }
         }
         if (request.getParameter("city") != null && !request.getParameter("city").equals("")) {
             location = request.getParameter("city");

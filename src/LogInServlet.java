@@ -25,7 +25,16 @@ public class LogInServlet extends HttpServlet {
         // TODO: Another possibility is that they used a service like POSTMAN to force a POST, which we should check for too.
 
         //Get the information of the user from the log in form.
-        User user = new User(request.getParameter("username"), request.getParameter("password"), request.getParameter("userType"));
+
+        //Check if the information that is received from the form is OK.
+        if (request.getParameter("username").isEmpty() || request.getParameter("username") == null){
+            response.sendRedirect("NO.html");
+        }
+        if (request.getParameter("password").isEmpty() || request.getParameter("password") == null){
+            response.sendRedirect("NO.html");
+        }
+
+        User user = new User(request.getParameter("username"), request.getParameter("password"), " ");
         boolean correctInfo;
 
         //Check if there are any registered users.

@@ -20,6 +20,8 @@ public class BookRoomServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //TODO..? Do something here to check if someone didn't force to do a doPost through a service like POSTMAN.
+        // Since the doPost is not used just redirect people to the NO.html page.
+        response.sendRedirect("NO.html");
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
