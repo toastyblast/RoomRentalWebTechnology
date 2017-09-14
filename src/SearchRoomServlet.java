@@ -1,6 +1,4 @@
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -22,13 +20,6 @@ public class SearchRoomServlet extends HttpServlet {
         super.init();
 
         model = (Model) getServletContext().getAttribute("model");
-    }
-
-    @Override
-    public void service(ServletRequest req, ServletResponse res) throws ServletException, IOException {
-        super.service(req, res);
-
-        //Anything else than the super...
     }
 
     /**
@@ -109,12 +100,5 @@ public class SearchRoomServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //TODO..? Do something here to check if someone didn't force to do a doPost through a service like POSTMAN.
-    }
-
-    @Override
-    public void destroy() {
-        super.destroy();
-
-        //Anything else than the super...
     }
 }
