@@ -4,9 +4,13 @@ public class Room {
     private int squareMeters;
     private double rentalFee;
     private String landlord;
-    private String renter;
+    private String renter = "";
     private boolean available;
     private int id;
+
+    public String getRenter() {
+        return renter;
+    }
 
     @Override
     public String toString() {
@@ -14,6 +18,7 @@ public class Room {
                 "location='" + location + '\'' +
                 ", squareMeters=" + squareMeters +
                 ", rentalFee=" + rentalFee +
+
                 ", landlord='" + landlord + '\'' +
                 ", renter='" + renter + '\'' +
                 ", available=" + available +
