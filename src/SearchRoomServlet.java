@@ -70,6 +70,7 @@ public class SearchRoomServlet extends HttpServlet {
 
         response.setContentType("text/html");
         out.println("<form action=\"./BookRoomServlet\" method=\"get\">");
+        boolean hasRooms = false;
         for (Room currentRoom : allRooms) {
             //Take all the rooms and compare them one by one to the search queries.
             if (minSquareMeters <= currentRoom.getSquareMeters() && maxRentalFee >= currentRoom.getRentalFee()) {
@@ -77,17 +78,21 @@ public class SearchRoomServlet extends HttpServlet {
                 if (location.isEmpty()) {
                     out.println("<input type=\"radio\" name=\"roomForRent\" value=\""+ currentRoom.getId() +"\" checked>" + currentRoom + " <br>");
                     roomsFound++;
+                    hasRooms = true;
                 } else {
                     //This means the user did fill in an location, so check if this room applies to that to.
                     if (currentRoom.getLocation().equals(location)) {
                         out.println("<input type=\"radio\" name=\"roomForRent\" value=\""+ currentRoom.getId() +"\" checked>" + currentRoom + " <br>");
                         roomsFound++;
+                        hasRooms = true;
                     }
                 }
             }
         }
-        out.println("<input type=\"submit\" value=\"Book selected room\">");
-        out.println("</form>");
+        if (hasRooms) {
+            out.println("<input type=\"submit\" value=\"Book selected room\">");
+            out.println("</form>");
+        }
         if (roomsFound == 0) {
             //If no rooms have been found, let the user know!
             out.println("<p>No rooms matching your search queries could be found!</p>");
