@@ -31,7 +31,7 @@ public class OverviewServlet extends HttpServlet {
             //If they do, that means they've logged in before. Then check if the user is a landlord, and not a tenant.
             if (type.equals("landlord")) {
                 //If they are a landlord, forward them to the secret addroom.html page.
-                RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("./WEB-INF/addroom.html");
+                RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/addroom.html");
                 dispatcher.forward(request, response);
             } else {
                 //If they're a tenant, let them know they shouldn't be here.

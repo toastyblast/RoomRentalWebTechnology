@@ -47,7 +47,7 @@ public class BookRoomServlet extends HttpServlet {
                     //Tell the system that they booked the room.
                     model.bookRoom(Integer.parseInt(roomId), user);
                     //Then return the user back to the tenant screen.
-                    RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("./WEB-INF/tenant.html");
+                    RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/tenant.html");
                     dispatcher.forward(request, response);
                 }
             }

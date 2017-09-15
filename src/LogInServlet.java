@@ -73,7 +73,7 @@ public class LogInServlet extends HttpServlet {
 
             if (user.getOccupation().equals("tenant")) {
                 //If the user is a tenant, send them to the tenant.html page
-                RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("./WEB-INF/tenant.html");
+                RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/tenant.html");
                 dispatcher.forward(request, response);
             } else if (user.getOccupation().equals("landlord")) {
                 //If the user is a landlord, send them to their rooms overview servlet!
