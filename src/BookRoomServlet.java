@@ -42,7 +42,7 @@ public class BookRoomServlet extends HttpServlet {
                 if (!model.checkRoomAvailable(Integer.parseInt(roomId))) {
                     //Tell the user the room is already booked if they tried to select such a room.
                     response.setContentType("text/html");
-                    response.getWriter().println("Room is already booked. Click on the back button of your browser to return to your user page!");
+                    response.getWriter().println("<p>Room is already booked. Click on the back button of your browser to return to your user page!</p>");
                 } else {
                     //Get the user from the current session.
                     User user = (User) request.getSession().getAttribute("user");

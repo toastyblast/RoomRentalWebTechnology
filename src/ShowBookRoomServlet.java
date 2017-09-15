@@ -39,23 +39,35 @@ public class ShowBookRoomServlet extends HttpServlet {
             User user = (User) httpSession.getAttribute("user");
             //Check if the user is a tenant
             if (user.getOccupation().equals("tenant")) {
-                PrintWriter out = response.getWriter();
                 boolean hasRooms = false;
-
+                PrintWriter out = response.getWriter();
+                response.setContentType("text/html");
+                //Print out the response page.
+                out.println("<head>");
+                out.println("<title>Bookings overview</title>");
+                out.println("</head>");
+                out.println("<body>");
+                out.println("<h1>Room Rental Web Application</h1>");
+                out.println("<form action=\"./ShowPersonsServlet\" method=\"get\">");
+                out.println("<input type=\"submit\" value=\"User overview\"></form>");
+                out.println("<form action=\"./LogInServlet\" method=\"get\">");
+                out.println("<input type=\"submit\" value=\"Log out\"></form><br>");
+                out.println("<ul>");
                 //Loop through all of the rooms.
                 for (int i = 0; i < model.getAddedRooms().size(); i++) {
-
                     //If the renter's username matches that of the current user's name, print the room.
                     if (model.getAddedRooms().get(i).getRenter().equals(user.getName())) {
-                        out.println("<h1>" + model.getAddedRooms().get(i) + "<h1>");
+                        out.println("<li>" + model.getAddedRooms().get(i) + "</li>");
                         hasRooms = true;
                     }
                 }
-
+                out.println("</ul>");
                 //If no rooms are printed show the user that currently they have no rooms.
                 if (!hasRooms) {
-                    response.getWriter().println("You have no booked rooms.");
+                    out.println("You haven't booked any rooms as of yet!<br>");
                 }
+                out.println("<br>To return to the search page, click the back button of your browser!");
+                out.println("</body>");
             } else {
                 response.sendRedirect("./NO.html");
             }

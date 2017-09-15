@@ -97,7 +97,7 @@ public class SearchRoomServlet extends HttpServlet {
             }
         }
         if (hasRooms) {
-            out.println("<input type=\"submit\" value=\"Book selected room\">");
+            out.println("<br><input type=\"submit\" value=\"Book selected room\">");
             out.println("</form>");
         }
         if (roomsFound == 0) {

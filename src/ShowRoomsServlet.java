@@ -67,7 +67,7 @@ public class ShowRoomsServlet extends HttpServlet {
                     }
                     out.println("</ul>");
                 }
-                out.println("<body>");
+                out.println("</body>");
             } else {
                 //They're a landlord and they should not be able to view this page.
                 response.sendRedirect("./NO.html");
