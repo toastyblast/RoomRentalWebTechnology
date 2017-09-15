@@ -7,12 +7,20 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+/**
+ * Servlet that is responsible for sending a Landlord type user to the addroom.html page when the landlord clicks on the
+ *  "Add room" button on the ShowRoomsServlet.
+ */
 @WebServlet("/OverviewServlet")
 public class OverviewServlet extends HttpServlet {
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //TODO..? Do something here to check if someone didn't force to do a doPost through a service like POSTMAN.
-    }
-
+    /**
+     * Method that sends the landlord type user from the ShowRoomsServlet to the addroom.html.
+     *
+     * @param request is the request from the user's client.
+     * @param response is what the server will respond with to the request.
+     * @throws ServletException is an exception thrown when the server encounters any kind of difficulty.
+     * @throws IOException happens when any form of an I/O operation has been interrupted or caused to fail.
+     */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //Get the user's session, if they have one.
         HttpSession httpSession = request.getSession(false);
@@ -33,5 +41,17 @@ public class OverviewServlet extends HttpServlet {
             //If they are not logged in at all, let them know they shouldn't be here.
             response.sendRedirect("./NO.html");
         }
+    }
+
+    /**
+     * A method that's not useful for this servlet, but altered anyways to prevent nosey users from accessing things they shouldn't.
+     *
+     * @param request is the request from the user's client.
+     * @param response is what the server will respond with to the request.
+     * @throws ServletException is an exception thrown when the server encounters any kind of difficulty.
+     * @throws IOException happens when any form of an I/O operation has been interrupted or caused to fail.
+     */
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        //TODO Do something here to check if someone didn't force to do a doPost through a service like POSTMAN.
     }
 }

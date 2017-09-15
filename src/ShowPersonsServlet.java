@@ -21,13 +21,6 @@ public class ShowPersonsServlet extends HttpServlet {
         counter = 0;
     }
 
-    @Override
-    public void service(ServletRequest req, ServletResponse res) throws ServletException, IOException {
-        super.service(req, res);
-
-        //Anything else than the super...
-    }
-
     /**
      * The piece of code that shows the lsit of all users on the website and the amount of times it has been visited by
      * the client's browser in a set amount of time.
@@ -86,15 +79,16 @@ public class ShowPersonsServlet extends HttpServlet {
         // of a new counter cookie for the next 24 hours.
     }
 
+    /**
+     * A method that's not useful for this servlet, but altered anyways to prevent nosey users from accessing things they shouldn't.
+     *
+     * @param req is the request from the user's client.
+     * @param resp is what the server will respond with to the request.
+     * @throws ServletException is an exception thrown when the server encounters any kind of difficulty.
+     * @throws IOException happens when any form of an I/O operation has been interrupted or caused to fail.
+     */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //TODO..? Do something here to check if someone didn't force to do a doPost through a service like POSTMAN.
-    }
-
-    @Override
-    public void destroy() {
-        super.destroy();
-
-        //Anything else than the super...
+        //TODO Do something here to check if someone didn't force to do a doPost through a service like POSTMAN.
     }
 }

@@ -53,15 +53,20 @@ public class SearchRoomServlet extends HttpServlet {
         double maxRentalFee = 9999999.99;
         String location = "";
 
-        //TODO: Add these parses into try loops first. There's still a chance someone filled in something that's not a number through the F12 menu, and we should catch that here and anywhere else we parse something.
-        if (request.getParameter("squareMeters") != null) {
-            minSquareMeters = Integer.parseInt(request.getParameter("squareMeters"));
-        }
-        if (request.getParameter("rentalPrice") != null) {
-            maxRentalFee = Double.parseDouble(request.getParameter("rentalPrice"));
-        }
-        if (request.getParameter("city") != null && !request.getParameter("city").equals("")) {
-            location = request.getParameter("city");
+        //Make sure to check that the user didn't sneak in some invalid data forms to us.
+        try {
+            if (request.getParameter("squareMeters") != null) {
+                minSquareMeters = Integer.parseInt(request.getParameter("squareMeters"));
+            }
+            if (request.getParameter("rentalPrice") != null) {
+                maxRentalFee = Double.parseDouble(request.getParameter("rentalPrice"));
+            }
+            if (request.getParameter("city") != null && !request.getParameter("city").equals("")) {
+                location = request.getParameter("city");
+            }
+        } catch (IllegalArgumentException iae) {
+            //If they did send invalid information, redirect that to the bad people's corner.
+            response.sendRedirect("./NO.html");
         }
 
         ArrayList<Room> allRooms = model.getAddedRooms();
@@ -97,8 +102,16 @@ public class SearchRoomServlet extends HttpServlet {
         }
     }
 
+    /**
+     * A method that's not useful for this servlet, but altered anyways to prevent nosey users from accessing things they shouldn't.
+     *
+     * @param req is the request from the user's client.
+     * @param resp is what the server will respond with to the request.
+     * @throws ServletException is an exception thrown when the server encounters any kind of difficulty.
+     * @throws IOException happens when any form of an I/O operation has been interrupted or caused to fail.
+     */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //TODO..? Do something here to check if someone didn't force to do a doPost through a service like POSTMAN.
+        //TODO Do something here to check if someone didn't force to do a doPost through a service like POSTMAN.
     }
 }

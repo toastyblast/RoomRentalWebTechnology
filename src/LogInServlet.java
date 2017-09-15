@@ -8,6 +8,9 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+/**
+ * This servlet is used to log in existing users and send them to their right page or log them out.
+ */
 @WebServlet("/LogInServlet")
 public class LogInServlet extends HttpServlet {
     private Model model;
@@ -19,11 +22,15 @@ public class LogInServlet extends HttpServlet {
         model = (Model) getServletContext().getAttribute("model");
     }
 
+    /**
+     * This doPost is called whenever a user logs in from login.html. It sends the user to the page appropriate for their credentials.
+     *
+     * @param request is the request from the user's client.
+     * @param response is what the server will respond with to the request.
+     * @throws ServletException is an exception thrown when the server encounters any kind of difficulty.
+     * @throws IOException happens when any form of an I/O operation has been interrupted or caused to fail.
+     */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //TODO: If a user is already logged in but for some reason returned to the login page and entered new credentials,
-        // TODO: check for that here. Log out their old session in that case and create a new one with the new credentials
-        // TODO: Another possibility is that they used a service like POSTMAN to force a POST, which we should check for too.
-
         //Get the information of the user from the log in form.
         User user = new User(request.getParameter("username"), request.getParameter("password"), request.getParameter("userType"));
         boolean correctInfo;
@@ -46,7 +53,7 @@ public class LogInServlet extends HttpServlet {
             PrintWriter out = response.getWriter();
             //There is still an active account on this browser, let the user either log out or return to the login menu
             out.println("<h1>Oops, login conflict! :(</h1>");
-            out.println("<p>It seems that you're already logged in on another tab in this browser. This means we can't log you in here!</p>");
+            out.println("<p>It seems that you're already logged in this browser in the past hour. This means we can't log you in here!</p>");
             out.println("To go back to the login screen, <a href=\"./login.html\">click here</a><br><br>");
             out.println("Optionally, you could also force log the other account out by pressing the button and try to login again!");
             out.println("To force such a logout across all active tabs, <a href=\"./LogInServlet\">click here</a>");
@@ -66,6 +73,14 @@ public class LogInServlet extends HttpServlet {
         }
     }
 
+    /**
+     * This part of the LogInServlet is called when a user presses the "Log out" button on any page. It indeed logs out the user's session.
+     *
+     * @param req is the request from the user's client.
+     * @param resp is what the server will respond with to the request.
+     * @throws ServletException is an exception thrown when the server encounters any kind of difficulty.
+     * @throws IOException happens when any form of an I/O operation has been interrupted or caused to fail.
+     */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //Get the user's session, if they have one.

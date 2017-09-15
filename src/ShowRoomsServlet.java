@@ -1,6 +1,4 @@
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -22,13 +20,6 @@ public class ShowRoomsServlet extends HttpServlet {
         super.init();
 
         model = (Model) getServletContext().getAttribute("model");
-    }
-
-    @Override
-    public void service(ServletRequest req, ServletResponse res) throws ServletException, IOException {
-        super.service(req, res);
-
-        //Anything else than the super...
     }
 
     /**
@@ -108,9 +99,16 @@ public class ShowRoomsServlet extends HttpServlet {
                 //If there is an array list "connected" to the user, retrieve it from the ServletContext add to it the new room
                 //and then update the list in the ServletContext.
                 String location = req.getParameter("city");
-                //TODO: Add these parses into try loops first. There's still a chance someone filled in something that's not a number through the F12 menu, and we should catch that here and anywhere else we parse something.
-                int squareMeters = Integer.parseInt(req.getParameter("squareMeters"));
-                double rentalPrice = Double.parseDouble(req.getParameter("rentalPrice"));
+                int squareMeters = 0;
+                double rentalPrice = 0.00;
+                //Make sure that the user didn't find a way to sneak in invalid input, even though the pages restrict them to do so.
+                try {
+                    squareMeters = Integer.parseInt(req.getParameter("squareMeters"));
+                    rentalPrice = Double.parseDouble(req.getParameter("rentalPrice"));
+                } catch (IllegalArgumentException iae) {
+                    //If they did send invalid information, redirect that to the bad people's corner.
+                    resp.sendRedirect("./NO.html");
+                }
 
                 int before = model.getAddedRooms().size();
                 model.addRoom(location, squareMeters, rentalPrice, currentUser.getName());
@@ -132,12 +130,5 @@ public class ShowRoomsServlet extends HttpServlet {
             //If they are not logged in at all, let them know they shouldn't be here.
             resp.sendRedirect("./NO.html");
         }
-    }
-
-    @Override
-    public void destroy() {
-        super.destroy();
-
-        //Anything else than the super...
     }
 }

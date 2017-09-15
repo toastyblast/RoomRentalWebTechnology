@@ -3,6 +3,9 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
+/**
+ * TODO: ...
+ */
 @WebListener
 public class CustomServletContextListener implements ServletContextListener {
     @Override
@@ -10,10 +13,5 @@ public class CustomServletContextListener implements ServletContextListener {
         ServletContext servletContext = sce.getServletContext();
         Model model = new Model();
         servletContext.setAttribute("model", model);
-    }
-
-    @Override
-    public void contextDestroyed(ServletContextEvent sce) {
-        //...
     }
 }

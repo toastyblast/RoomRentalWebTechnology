@@ -7,6 +7,9 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+/**
+ * TODO: ...
+ */
 @WebServlet("/ShowBookRoomServlet")
 public class ShowBookRoomServlet extends HttpServlet {
     private Model model;
@@ -14,32 +17,34 @@ public class ShowBookRoomServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         super.init();
+
         model = (Model) getServletContext().getAttribute("model");
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-    }
-
+    /**
+     * TODO: ...
+     *
+     * @param request is the request from the user's client.
+     * @param response is what the server will respond with to the request.
+     * @throws ServletException is an exception thrown when the server encounters any kind of difficulty.
+     * @throws IOException happens when any form of an I/O operation has been interrupted or caused to fail.
+     */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
         HttpSession httpSession = request.getSession(false);
 
         if (httpSession != null){
-
             User user = (User) httpSession.getAttribute("user");
 
             if (user.getOccupation().equals("tenant")){
-
                 PrintWriter out = response.getWriter();
                 boolean hasRooms = false;
 
                 for (int i = 0 ; i < model.getAddedRooms().size() ; i++){
+
                     if (model.getAddedRooms().get(i).getRenter().equals(user.getName())){
                         out.println("<h1>" + model.getAddedRooms().get(i) + "<h1>" );
                         hasRooms = true;
                     }
-
                 }
 
                 if (!hasRooms){
@@ -48,9 +53,20 @@ public class ShowBookRoomServlet extends HttpServlet {
             } else {
                 response.sendRedirect("NO.html");
             }
-
         } else {
             response.sendRedirect("NO.html");
         }
+    }
+
+    /**
+     * A method that's not useful for this servlet, but altered anyways to prevent nosey users from accessing things they shouldn't.
+     *
+     * @param request is the request from the user's client.
+     * @param response is what the server will respond with to the request.
+     * @throws ServletException is an exception thrown when the server encounters any kind of difficulty.
+     * @throws IOException happens when any form of an I/O operation has been interrupted or caused to fail.
+     */
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        //TODO Do something here to check if someone didn't force to do a doPost through a service like POSTMAN.
     }
 }
