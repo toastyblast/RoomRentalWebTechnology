@@ -51,10 +51,10 @@ public class ShowBookRoomServlet extends HttpServlet {
                     response.getWriter().println("You have no booked rooms.");
                 }
             } else {
-                response.sendRedirect("NO.html");
+                response.sendRedirect("./NO.html");
             }
         } else {
-            response.sendRedirect("NO.html");
+            response.sendRedirect("./NO.html");
         }
     }
 
@@ -68,6 +68,6 @@ public class ShowBookRoomServlet extends HttpServlet {
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Since the doPost is not used just redirect people to the NO.html page.
-        response.sendRedirect("NO.html");
+        response.sendRedirect("./NO.html");
     }
 }

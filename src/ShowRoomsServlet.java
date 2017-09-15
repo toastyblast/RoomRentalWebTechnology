@@ -101,7 +101,7 @@ public class ShowRoomsServlet extends HttpServlet {
 
                 //Check if the information is OK.
                 if (req.getParameter("city").isEmpty() || req.getParameter("city") != null) {
-                    resp.sendRedirect("NO.html");
+                    resp.sendRedirect("./NO.html");
                 }
 
                 String location = req.getParameter("city");
@@ -111,12 +111,12 @@ public class ShowRoomsServlet extends HttpServlet {
                 try {
                     squareMeters = Integer.parseInt(req.getParameter("squareMeters"));
                 } catch (NumberFormatException nfe) {
-                    resp.sendRedirect("NO.html");
+                    resp.sendRedirect("./NO.html");
                 }
                 try {
                     rentalPrice = Double.parseDouble(req.getParameter("rentalPrice"));
                 } catch (NumberFormatException nfe) {
-                    resp.sendRedirect("NO.html");
+                    resp.sendRedirect("/.NO.html");
                 }
 
 

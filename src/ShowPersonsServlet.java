@@ -90,6 +90,6 @@ public class ShowPersonsServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         // Since the doPost is not used just redirect people to the NO.html page.
-        resp.sendRedirect("NO.html");
+        resp.sendRedirect("./NO.html");
     }
 }

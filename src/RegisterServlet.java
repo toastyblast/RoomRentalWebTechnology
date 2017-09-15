@@ -28,21 +28,19 @@ public class RegisterServlet extends HttpServlet {
      * @throws IOException      happens when any form of an I/O operation has been interrupted or caused to fail.
      */
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //TODO: Check if they didn't force a POST through a service like Postman that doesn't have any parameters in it.
-
         boolean notUnique;
         //If there is a user list, check whether the credentials are unique, if yes add the user to the list.
         //Retrieve the userList from the ServletContext.
 
         //Check if the parameters are empty or null. If they are redirect the user to an error page.
         if (req.getParameter("chosenUsername").isEmpty() || req.getParameter("chosenUsername") == null) {
-            resp.sendRedirect("NO.html");
+            resp.sendRedirect("./NO.html");
         }
         if (req.getParameter("chosenPassword").isEmpty() || req.getParameter("chosenPassword") == null) {
-            resp.sendRedirect("NO.html");
+            resp.sendRedirect("./NO.html");
         }
         if (req.getParameter("userType").isEmpty() || req.getParameter("userType") == null) {
-            resp.sendRedirect("NO.html");
+            resp.sendRedirect("./NO.html");
         }
 
         User user = new User(req.getParameter("chosenUsername"), req.getParameter("chosenPassword"), req.getParameter("userType"));

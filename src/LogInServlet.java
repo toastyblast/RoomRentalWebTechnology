@@ -35,10 +35,10 @@ public class LogInServlet extends HttpServlet {
 
         //Check if the information that is received from the form is OK.
         if (request.getParameter("username").isEmpty() || request.getParameter("username") == null) {
-            response.sendRedirect("NO.html");
+            response.sendRedirect("./NO.html");
         }
         if (request.getParameter("password").isEmpty() || request.getParameter("password") == null) {
-            response.sendRedirect("NO.html");
+            response.sendRedirect("./NO.html");
         }
 
         User user = new User(request.getParameter("username"), request.getParameter("password"), " ");
@@ -73,7 +73,7 @@ public class LogInServlet extends HttpServlet {
 
             if (user.getOccupation().equals("tenant")) {
                 //If the user is a tenant, send them to the tenant.html page
-                RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/tenant.html");
+                RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("./WEB-INF/tenant.html");
                 dispatcher.forward(request, response);
             } else if (user.getOccupation().equals("landlord")) {
                 //If the user is a landlord, send them to their rooms overview servlet!

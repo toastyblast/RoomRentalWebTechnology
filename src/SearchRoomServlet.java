@@ -57,14 +57,14 @@ public class SearchRoomServlet extends HttpServlet {
             try {
                 minSquareMeters = Integer.parseInt(request.getParameter("squareMeters"));
             } catch (NumberFormatException nfe) {
-                response.sendRedirect("NO.html");
+                response.sendRedirect("./NO.html");
             }
         }
         if (request.getParameter("rentalPrice") != null) {
             try {
                 maxRentalFee = Double.parseDouble(request.getParameter("rentalPrice"));
             } catch (NumberFormatException nfe) {
-                response.sendRedirect("NO.html");
+                response.sendRedirect("./NO.html");
             }
         }
         if (request.getParameter("city") != null && !request.getParameter("city").equals("")) {
@@ -120,6 +120,6 @@ public class SearchRoomServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         // Since the doPost is not used just redirect people to the NO.html page.
-        resp.sendRedirect("NO.html");
+        resp.sendRedirect("./NO.html");
     }
 }
