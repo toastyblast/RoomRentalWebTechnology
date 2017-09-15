@@ -8,7 +8,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 /**
- * TODO: ...
+ * Servlet that is triggered when the user want to see the rooms that he/she has booked. It displays a list with all of
+ * the rooms that have been booked by the user.
  */
 @WebServlet("/ShowBookRoomServlet")
 public class ShowBookRoomServlet extends HttpServlet {
@@ -22,7 +23,8 @@ public class ShowBookRoomServlet extends HttpServlet {
     }
 
     /**
-     * TODO: ... ALSO ADD COMMENTS IN THIS METHOD (Caps to get your attention, I'm not mad xD)
+     * Method that is used to go over all the rooms and check which rooms belong to the current user. The rooms that
+     * match the user are displayed to him/her.
      *
      * @param request  is the request from the user's client.
      * @param response is what the server will respond with to the request.
@@ -32,21 +34,25 @@ public class ShowBookRoomServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession httpSession = request.getSession(false);
 
+        //Check if there is a session
         if (httpSession != null) {
             User user = (User) httpSession.getAttribute("user");
-
+            //Check if the user is a tenant
             if (user.getOccupation().equals("tenant")) {
                 PrintWriter out = response.getWriter();
                 boolean hasRooms = false;
 
+                //Loop through all of the rooms.
                 for (int i = 0; i < model.getAddedRooms().size(); i++) {
 
+                    //If the renter's username matches that of the current user's name, print the room.
                     if (model.getAddedRooms().get(i).getRenter().equals(user.getName())) {
                         out.println("<h1>" + model.getAddedRooms().get(i) + "<h1>");
                         hasRooms = true;
                     }
                 }
 
+                //If no rooms are printed show the user that currently they have no rooms.
                 if (!hasRooms) {
                     response.getWriter().println("You have no booked rooms.");
                 }

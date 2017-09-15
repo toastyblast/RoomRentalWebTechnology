@@ -8,7 +8,8 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 /**
- * TODO: ...
+ * Class that is used to book rooms. It gets the id of the room that was passed to it, uses the id to check if the room
+ * is free and if it is free, it is booked by the user.
  */
 @WebServlet("/BookRoomServlet")
 public class BookRoomServlet extends HttpServlet {
@@ -22,7 +23,8 @@ public class BookRoomServlet extends HttpServlet {
     }
 
     /**
-     * TODO: ...
+     * Method that is called when you submit the form from the SearchRoomServlet. It checks if the room can be booked
+     * and then gives it to the user.
      *
      * @param request  is the request from the user's client.
      * @param response is what the server will respond with to the request.

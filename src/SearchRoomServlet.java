@@ -60,7 +60,7 @@ public class SearchRoomServlet extends HttpServlet {
                 response.sendRedirect("./NO.html");
             }
         }
-        if (request.getParameter("rentalPrice") != null) {
+        else if (request.getParameter("rentalPrice") != null) {
             try {
                 maxRentalFee = Double.parseDouble(request.getParameter("rentalPrice"));
             } catch (NumberFormatException nfe) {

@@ -99,39 +99,43 @@ public class ShowRoomsServlet extends HttpServlet {
                 //If there is an array list "connected" to the user, retrieve it from the ServletContext add to it the new room
                 //and then update the list in the ServletContext.
 
+                boolean check = true;
                 //Check if the information is OK.
-                if (req.getParameter("city").isEmpty() || req.getParameter("city") != null) {
+                if (req.getParameter("city").isEmpty() || req.getParameter("city") == null) {
                     resp.sendRedirect("./NO.html");
+                    check = false;
+                }
+                if (check){
+                    String location = req.getParameter("city");
+                    int squareMeters = 0;
+                    double rentalPrice = 0.00;
+                    //Intercept any attempts at providing invalid data that might crash the web application.
+                    try {
+                        squareMeters = Integer.parseInt(req.getParameter("squareMeters"));
+                    } catch (NumberFormatException nfe) {
+                        resp.sendRedirect("./NO.html");
+                    }
+                    try {
+                        rentalPrice = Double.parseDouble(req.getParameter("rentalPrice"));
+                    } catch (NumberFormatException nfe) {
+                        resp.sendRedirect("/.NO.html");
+                    }
+
+
+                    int before = model.getAddedRooms().size();
+                    model.addRoom(location, squareMeters, rentalPrice, currentUser.getName());
+                    int after = model.getAddedRooms().size();
+
+                    PrintWriter out = resp.getWriter();
+                    resp.setContentType("text/html");
+                    if (before < after) {
+                        out.println("Your room has been successfully added:");
+                        out.println("<br>" + model.getAddedRooms().get(model.getAddedRooms().size() - 1) + "<br><br>");
+                    }
+
+                    out.println("<a href=\"./ShowRoomsServlet\">Click here</a> to return to the overview of your rooms.");
                 }
 
-                String location = req.getParameter("city");
-                int squareMeters = 0;
-                double rentalPrice = 0.00;
-                //Intercept any attempts at providing invalid data that might crash the web application.
-                try {
-                    squareMeters = Integer.parseInt(req.getParameter("squareMeters"));
-                } catch (NumberFormatException nfe) {
-                    resp.sendRedirect("./NO.html");
-                }
-                try {
-                    rentalPrice = Double.parseDouble(req.getParameter("rentalPrice"));
-                } catch (NumberFormatException nfe) {
-                    resp.sendRedirect("/.NO.html");
-                }
-
-
-                int before = model.getAddedRooms().size();
-                model.addRoom(location, squareMeters, rentalPrice, currentUser.getName());
-                int after = model.getAddedRooms().size();
-
-                PrintWriter out = resp.getWriter();
-                resp.setContentType("text/html");
-                if (before < after) {
-                    out.println("Your room has been successfully added:");
-                    out.println("<br>" + model.getAddedRooms().get(model.getAddedRooms().size() - 1) + "<br><br>");
-                }
-
-                out.println("<a href=\"./ShowRoomsServlet\">Click here</a> to return to the overview of your rooms.");
             } else {
                 //They're a landlord and they should not be able to view this page.
                 resp.sendRedirect("./NO.html");
