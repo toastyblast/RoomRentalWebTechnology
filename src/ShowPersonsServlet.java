@@ -25,14 +25,14 @@ public class ShowPersonsServlet extends HttpServlet {
      * The piece of code that shows the lsit of all users on the website and the amount of times it has been visited by
      * the client's browser in a set amount of time.
      *
-     * @param request is the request from the user's client.
+     * @param request  is the request from the user's client.
      * @param response is what the server will respond with to the request.
      * @throws ServletException is an exception thrown when the server encounters any kind of difficulty.
-     * @throws IOException happens when any form of an I/O operation has been interrupted or caused to fail.
+     * @throws IOException      happens when any form of an I/O operation has been interrupted or caused to fail.
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //Check if this user has a session in the first place.
-        if (request.getSession(false) != null){
+        if (request.getSession(false) != null) {
             //Any user should be able to access this page, regardless of what type they are, so just let them continue.
         } else {
             //If the user is not logged in at all, let them know they shouldn't be here.
@@ -47,7 +47,7 @@ public class ShowPersonsServlet extends HttpServlet {
         //Display a list of all the users in the system.
         ArrayList<User> users = model.getRegisteredUsers();
         out.println("<ul>");
-        for (Object user : users){
+        for (Object user : users) {
             out.println("<li>" + user + "</li>");
         }
         out.println("</ul>");
@@ -82,13 +82,14 @@ public class ShowPersonsServlet extends HttpServlet {
     /**
      * A method that's not useful for this servlet, but altered anyways to prevent nosey users from accessing things they shouldn't.
      *
-     * @param req is the request from the user's client.
+     * @param req  is the request from the user's client.
      * @param resp is what the server will respond with to the request.
      * @throws ServletException is an exception thrown when the server encounters any kind of difficulty.
-     * @throws IOException happens when any form of an I/O operation has been interrupted or caused to fail.
+     * @throws IOException      happens when any form of an I/O operation has been interrupted or caused to fail.
      */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //TODO Do something here to check if someone didn't force to do a doPost through a service like POSTMAN.
+        // Since the doPost is not used just redirect people to the NO.html page.
+        resp.sendRedirect("NO.html");
     }
 }

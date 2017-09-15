@@ -22,10 +22,10 @@ public class RegisterServlet extends HttpServlet {
     /**
      * Method that is called by the registration.html file to possibly register a new user with given credentials
      *
-     * @param req is the request from the user's client.
+     * @param req  is the request from the user's client.
      * @param resp is what the server will respond with to the request.
      * @throws ServletException is an exception thrown when the server encounters any kind of difficulty.
-     * @throws IOException happens when any form of an I/O operation has been interrupted or caused to fail.
+     * @throws IOException      happens when any form of an I/O operation has been interrupted or caused to fail.
      */
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //TODO: Check if they didn't force a POST through a service like Postman that doesn't have any parameters in it.
@@ -35,13 +35,13 @@ public class RegisterServlet extends HttpServlet {
         //Retrieve the userList from the ServletContext.
 
         //Check if the parameters are empty or null. If they are redirect the user to an error page.
-        if (req.getParameter("chosenUsername").isEmpty() || req.getParameter("chosenUsername") == null){
+        if (req.getParameter("chosenUsername").isEmpty() || req.getParameter("chosenUsername") == null) {
             resp.sendRedirect("NO.html");
         }
-        if (req.getParameter("chosenPassword").isEmpty() || req.getParameter("chosenPassword") == null){
+        if (req.getParameter("chosenPassword").isEmpty() || req.getParameter("chosenPassword") == null) {
             resp.sendRedirect("NO.html");
         }
-        if (req.getParameter("userType").isEmpty() || req.getParameter("userType") == null){
+        if (req.getParameter("userType").isEmpty() || req.getParameter("userType") == null) {
             resp.sendRedirect("NO.html");
         }
 

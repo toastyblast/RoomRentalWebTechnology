@@ -1,6 +1,4 @@
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -24,26 +22,19 @@ public class ShowRoomsServlet extends HttpServlet {
         model = (Model) getServletContext().getAttribute("model");
     }
 
-    @Override
-    public void service(ServletRequest req, ServletResponse res) throws ServletException, IOException {
-        super.service(req, res);
-
-        //Anything else than the super...
-    }
-
     /**
      * Method for displaying the add room form and also any rooms that belong to this landlord.
      *
-     * @param request is the request from the user's client.
+     * @param request  is the request from the user's client.
      * @param response is what the server will respond with to the request.
      * @throws ServletException is an exception thrown when the server encounters any kind of difficulty.
-     * @throws IOException happens when any form of an I/O operation has been interrupted or caused to fail.
+     * @throws IOException      happens when any form of an I/O operation has been interrupted or caused to fail.
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //Get the user's session, if they have one.
         HttpSession session = request.getSession(false);
         //Check if this user has a session in the first place, because they aren't allowed to come here unless logged in.
-        if (session != null){
+        if (session != null) {
             //Get the user object that should be bound to this session.
             User currentUser = (User) session.getAttribute("user");
 
@@ -90,17 +81,17 @@ public class ShowRoomsServlet extends HttpServlet {
     /**
      * Method for when a landlord has provided information for a room and clicked the "Add room" button.
      *
-     * @param req is the request from the user's client.
+     * @param req  is the request from the user's client.
      * @param resp is what the server will respond with to the request.
      * @throws ServletException is an exception thrown when the server encounters any kind of difficulty.
-     * @throws IOException happens when any form of an I/O operation has been interrupted or caused to fail.
+     * @throws IOException      happens when any form of an I/O operation has been interrupted or caused to fail.
      */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //Get the user's session, if they have one.
         HttpSession session = req.getSession(false);
         //Check if this user has a session in the first place, because they aren't allowed to come here unless logged in.
-        if (session != null){
+        if (session != null) {
             //Get the user object that should be bound to this session.
             User currentUser = (User) session.getAttribute("user");
 
@@ -109,25 +100,22 @@ public class ShowRoomsServlet extends HttpServlet {
                 //and then update the list in the ServletContext.
 
                 //Check if the information is OK.
-                if (req.getParameter("city").isEmpty() || req.getParameter("city") != null){
+                if (req.getParameter("city").isEmpty() || req.getParameter("city") != null) {
                     resp.sendRedirect("NO.html");
                 }
+
                 String location = req.getParameter("city");
-
-
-                //TODO: Add these parses into try loops first. There's still a chance someone filled in something that's not a number through the F12 menu, and we should catch that here and anywhere else we parse something.
                 int squareMeters = 0;
-
+                double rentalPrice = 0.00;
+                //Intercept any attempts at providing invalid data that might crash the web application.
                 try {
                     squareMeters = Integer.parseInt(req.getParameter("squareMeters"));
-                } catch (NumberFormatException nfe){
+                } catch (NumberFormatException nfe) {
                     resp.sendRedirect("NO.html");
                 }
-
-                double rentalPrice = 0;
                 try {
                     rentalPrice = Double.parseDouble(req.getParameter("rentalPrice"));
-                } catch (NumberFormatException nfe){
+                } catch (NumberFormatException nfe) {
                     resp.sendRedirect("NO.html");
                 }
 
@@ -138,9 +126,9 @@ public class ShowRoomsServlet extends HttpServlet {
 
                 PrintWriter out = resp.getWriter();
                 resp.setContentType("text/html");
-                if (before < after){
+                if (before < after) {
                     out.println("Your room has been successfully added:");
-                    out.println("<br>" + model.getAddedRooms().get(model.getAddedRooms().size()-1) + "<br><br>");
+                    out.println("<br>" + model.getAddedRooms().get(model.getAddedRooms().size() - 1) + "<br><br>");
                 }
 
                 out.println("<a href=\"./ShowRoomsServlet\">Click here</a> to return to the overview of your rooms.");
@@ -152,12 +140,5 @@ public class ShowRoomsServlet extends HttpServlet {
             //If they are not logged in at all, let them know they shouldn't be here.
             resp.sendRedirect("./NO.html");
         }
-    }
-
-    @Override
-    public void destroy() {
-        super.destroy();
-
-        //Anything else than the super...
     }
 }

@@ -25,19 +25,19 @@ public class LogInServlet extends HttpServlet {
     /**
      * This doPost is called whenever a user logs in from login.html. It sends the user to the page appropriate for their credentials.
      *
-     * @param request is the request from the user's client.
+     * @param request  is the request from the user's client.
      * @param response is what the server will respond with to the request.
      * @throws ServletException is an exception thrown when the server encounters any kind of difficulty.
-     * @throws IOException happens when any form of an I/O operation has been interrupted or caused to fail.
+     * @throws IOException      happens when any form of an I/O operation has been interrupted or caused to fail.
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //Get the information of the user from the log in form.
 
         //Check if the information that is received from the form is OK.
-        if (request.getParameter("username").isEmpty() || request.getParameter("username") == null){
+        if (request.getParameter("username").isEmpty() || request.getParameter("username") == null) {
             response.sendRedirect("NO.html");
         }
-        if (request.getParameter("password").isEmpty() || request.getParameter("password") == null){
+        if (request.getParameter("password").isEmpty() || request.getParameter("password") == null) {
             response.sendRedirect("NO.html");
         }
 
@@ -58,7 +58,7 @@ public class LogInServlet extends HttpServlet {
         if (!correctInfo) {
             //The user did not supply correct credentials, let them know!
             response.sendRedirect("./invalidcredentials.html");
-        } else if (request.getSession(false) != null){
+        } else if (request.getSession(false) != null) {
             PrintWriter out = response.getWriter();
             //There is still an active account on this browser, let the user either log out or return to the login menu
             out.println("<h1>Oops, login conflict! :(</h1>");
@@ -85,17 +85,17 @@ public class LogInServlet extends HttpServlet {
     /**
      * This part of the LogInServlet is called when a user presses the "Log out" button on any page. It indeed logs out the user's session.
      *
-     * @param req is the request from the user's client.
+     * @param req  is the request from the user's client.
      * @param resp is what the server will respond with to the request.
      * @throws ServletException is an exception thrown when the server encounters any kind of difficulty.
-     * @throws IOException happens when any form of an I/O operation has been interrupted or caused to fail.
+     * @throws IOException      happens when any form of an I/O operation has been interrupted or caused to fail.
      */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //Get the user's session, if they have one.
         HttpSession httpSession = req.getSession(false);
         //Check if this user has a session in the first place.
-        if (httpSession != null){
+        if (httpSession != null) {
             //If they do, invalidate their session and redirect them back to the login screen.
             httpSession.invalidate();
             resp.sendRedirect("./login.html");
