@@ -8,6 +8,10 @@ import javax.servlet.annotation.WebListener;
  */
 @WebListener
 public class CustomServletContextListener implements ServletContextListener {
+    /**
+     * Every time the server starts, put the model into the servlet context.
+     * @param sce
+     */
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         ServletContext servletContext = sce.getServletContext();

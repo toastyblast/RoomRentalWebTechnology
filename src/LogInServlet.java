@@ -32,7 +32,16 @@ public class LogInServlet extends HttpServlet {
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //Get the information of the user from the log in form.
-        User user = new User(request.getParameter("username"), request.getParameter("password"), request.getParameter("userType"));
+
+        //Check if the information that is received from the form is OK.
+        if (request.getParameter("username").isEmpty() || request.getParameter("username") == null){
+            response.sendRedirect("NO.html");
+        }
+        if (request.getParameter("password").isEmpty() || request.getParameter("password") == null){
+            response.sendRedirect("NO.html");
+        }
+
+        User user = new User(request.getParameter("username"), request.getParameter("password"), " ");
         boolean correctInfo;
 
         //Check if there are any registered users.

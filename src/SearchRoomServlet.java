@@ -53,20 +53,23 @@ public class SearchRoomServlet extends HttpServlet {
         double maxRentalFee = 9999999.99;
         String location = "";
 
-        //Make sure to check that the user didn't sneak in some invalid data forms to us.
-        try {
-            if (request.getParameter("squareMeters") != null) {
+        //TODO: Add these parses into try loops first. There's still a chance someone filled in something that's not a number through the F12 menu, and we should catch that here and anywhere else we parse something.
+        if (request.getParameter("squareMeters") != null) {
+            try {
                 minSquareMeters = Integer.parseInt(request.getParameter("squareMeters"));
+            } catch (NumberFormatException nfe){
+                response.sendRedirect("NO.html");
             }
-            if (request.getParameter("rentalPrice") != null) {
+        }
+        if (request.getParameter("rentalPrice") != null) {
+            try {
                 maxRentalFee = Double.parseDouble(request.getParameter("rentalPrice"));
+            } catch (NumberFormatException nfe){
+                response.sendRedirect("NO.html");
             }
-            if (request.getParameter("city") != null && !request.getParameter("city").equals("")) {
-                location = request.getParameter("city");
-            }
-        } catch (IllegalArgumentException iae) {
-            //If they did send invalid information, redirect that to the bad people's corner.
-            response.sendRedirect("./NO.html");
+        }
+        if (request.getParameter("city") != null && !request.getParameter("city").equals("")) {
+            location = request.getParameter("city");
         }
 
         ArrayList<Room> allRooms = model.getAddedRooms();
@@ -75,6 +78,7 @@ public class SearchRoomServlet extends HttpServlet {
 
         response.setContentType("text/html");
         out.println("<form action=\"./BookRoomServlet\" method=\"get\">");
+        boolean hasRooms = false;
         for (Room currentRoom : allRooms) {
             //Take all the rooms and compare them one by one to the search queries.
             if (minSquareMeters <= currentRoom.getSquareMeters() && maxRentalFee >= currentRoom.getRentalFee()) {
@@ -82,17 +86,21 @@ public class SearchRoomServlet extends HttpServlet {
                 if (location.isEmpty()) {
                     out.println("<input type=\"radio\" name=\"roomForRent\" value=\""+ currentRoom.getId() +"\" checked>" + currentRoom + " <br>");
                     roomsFound++;
+                    hasRooms = true;
                 } else {
                     //This means the user did fill in an location, so check if this room applies to that to.
                     if (currentRoom.getLocation().equals(location)) {
                         out.println("<input type=\"radio\" name=\"roomForRent\" value=\""+ currentRoom.getId() +"\" checked>" + currentRoom + " <br>");
                         roomsFound++;
+                        hasRooms = true;
                     }
                 }
             }
         }
-        out.println("<input type=\"submit\" value=\"Book selected room\">");
-        out.println("</form>");
+        if (hasRooms) {
+            out.println("<input type=\"submit\" value=\"Book selected room\">");
+            out.println("</form>");
+        }
         if (roomsFound == 0) {
             //If no rooms have been found, let the user know!
             out.println("<p>No rooms matching your search queries could be found!</p>");
@@ -102,16 +110,8 @@ public class SearchRoomServlet extends HttpServlet {
         }
     }
 
-    /**
-     * A method that's not useful for this servlet, but altered anyways to prevent nosey users from accessing things they shouldn't.
-     *
-     * @param req is the request from the user's client.
-     * @param resp is what the server will respond with to the request.
-     * @throws ServletException is an exception thrown when the server encounters any kind of difficulty.
-     * @throws IOException happens when any form of an I/O operation has been interrupted or caused to fail.
-     */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //TODO Do something here to check if someone didn't force to do a doPost through a service like POSTMAN.
+        //TODO..? Do something here to check if someone didn't force to do a doPost through a service like POSTMAN.
     }
 }
